@@ -26,7 +26,7 @@ class RamalControl implements InterfaceController
                 break;
             //TODO Criar um default se nao achar pra onde direcionar
         }
-        print $this->renderizarHtml("View/$view.php", $dados);
+        print $this->renderizarHtml("View/Ramal/$view.php", $dados);
     }
 
     public function listar()
@@ -46,7 +46,7 @@ class RamalControl implements InterfaceController
         } else {
             $this->setaMensagemRetorno('Nenhum ramal criado até o momento', 'info');
         }
-        print $this->renderizarHtml('View/listaRamal.php', $dados);
+        print $this->renderizarHtml('View/Ramal/listaRamal.php', $dados);
     }
 
     public function editar()
@@ -63,7 +63,7 @@ class RamalControl implements InterfaceController
             'titulo' => 'Editar Ramal',
             'ramal' => $ramal
         ];
-        print $this->renderizarHtml('View/addRamal.php', $dados);
+        print $this->renderizarHtml('View/Ramal/addRamal.php', $dados);
     }
 
     public function persistir()
