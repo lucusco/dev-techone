@@ -9,7 +9,7 @@ A ideia inicial consiste em desenvolver um sistema web que permita criar ramais 
 
 #### Ferramentas utilizadas
 
-As ferramentas utilizadas durante 
+As ferramentas e tecnologias utilizadas durante o desenvolvimento são:
 * Servidor Web Apache
 * Banco de dados Postgres
 * Docker
