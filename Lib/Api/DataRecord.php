@@ -4,8 +4,6 @@ namespace Techone\Lib\Api;
 
 use PDO;
 use DomainException;
-use Reflector;
-use Techone\Lib\Model\Ramal;
 use Techone\Lib\Database\Transaction;
 
 /**
@@ -33,7 +31,6 @@ abstract class DataRecord
     protected function store(array $object)
     {
         $object = self::prepare($object);
-        //var_dump($object); var_dump($this);
 
         if (!isset($object['id'])) { // INSERT
             $object['id'] = $this->getProximoId();
@@ -41,27 +38,32 @@ abstract class DataRecord
                 '(' . implode(', ', array_keys($object)) . ')' .
                 ' VALUES ' .
                 '(' . implode(', ', array_values($object)) . ')';
-            //echo $sql . '<br>';
+
         } else { //UPDATE
             $sql = "UPDATE {$this->getEntity()} ";
             foreach ($object as $column => $value) {
                 $sets[] = "$column = $value";
             }
-            //var_dump($sets);
             $sql .= 'SET ' . implode(', ', $sets);
             $sql .= "WHERE id = {$object['id']}";
-            //echo $sql . '<br>';
         }
 
         if ($conn = Transaction::getConnection()) {
             $result = $conn->exec($sql);
-            //var_dump($result);
             return $result;
         } else {
             throw new DomainException('Não foi possível obter a conexão');
         }
     }
 
+    /**
+     * Carrega dados (objetos) do banco\
+     * Possibilidade de procurar por valores específicos
+     *
+     * @param int $id Id do objeto
+     * @param string $coluna Coluna a ser pesquisada
+     * @param string $order Ordenação
+     */
     public function load(int $id = null, string $coluna = '*', string $order = 'id')
     {
         $sql = isset($id) ? "SELECT $coluna FROM {$this->getEntity()} WHERE id = $id" : "SELECT $coluna FROM {$this->getEntity()} ORDER BY $order";

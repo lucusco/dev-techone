@@ -14,6 +14,12 @@ class Connection
     {
     }
 
+    /**
+     * Faz o parse das informações de conexão com o banco e a retorna
+     *
+     * @return PDO
+     * @throws Exception em caso de falha ao ler os parâmetros
+     */
     public static function conectar(): PDO
     {
         $dados = parse_ini_file(BASE_DIR . 'Config/techone.ini');

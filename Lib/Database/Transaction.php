@@ -9,12 +9,16 @@ use Techone\Lib\Database\Connection;
  */
 class Transaction 
 {
+    /** @var PDO conn */
     private static $conn;
 
     private function __construct()
     {
     }
 
+    /**
+     *  Atribui uma conexão à variável conn
+     */
     public static function openConnection()
     {
         if (empty(self::$conn)) {
@@ -23,11 +27,19 @@ class Transaction
         }
     }
 
+    /**
+     *  Retorna a conexão
+     * 
+     * @return PDO conn
+     */
     public static function getConnection()
     {
         return self::$conn;
     }
 
+    /**
+     *  Fecha a conexão
+     */
     public static function close()
     {
         if (self::$conn) {
@@ -36,6 +48,9 @@ class Transaction
         }
     }
 
+    /**
+     * Desfaz alterações em caso de falha
+     */
     public static function rollback()
     {
         if (self::$conn) {

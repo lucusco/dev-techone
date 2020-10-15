@@ -32,6 +32,7 @@ class Ramal extends DataRecord
     {
     }
 
+    //Setters e getters
     public function setId($id)
     {
         $this->id = $id;
@@ -115,13 +116,17 @@ class Ramal extends DataRecord
         else $this->recording = 'false';            
     }
 
+    /**
+     * Carrega um objeto ramal do BD
+     *
+     * @param $id ID do ramal a ser carregado
+     */
     public function carregarRamal($id = null)
     {
         try {
             Transaction::openConnection();
             if ($id) {
                 $ramal = $this->load($id);
-                //var_dump($ramal); die;
                 Transaction::close();
                 return $ramal;
             }
@@ -132,6 +137,11 @@ class Ramal extends DataRecord
         }
     }
 
+    /**
+     * Consulta de ramais dno BD, possibilidade de paginação de resultados
+     *
+     * @param int $pagina Se enviada, a consulta será paginada
+     */
     public static function todosRamais(int $pagina=NULL)
     {
         try {
@@ -173,6 +183,10 @@ class Ramal extends DataRecord
         }
     }
 
+    /**
+     * Persiste o ramal no BD
+     *  
+     */
     public function persistir()
     {
         try {
@@ -188,6 +202,11 @@ class Ramal extends DataRecord
         }
     }
 
+    /**
+     * Remove um ramal do BD
+     *
+     * @param int $id ID do ramal a ser removido
+     */
     public static function removerRamal(int $id)
     {
         try {
@@ -295,7 +314,7 @@ class Ramal extends DataRecord
         if (!count($ramais) > 0) return false;
 
         $filename = DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . date('H:i:s_') . 'ramais.csv';
-        //$filename = BASE_DIR . 'Files/Download/' . date('H:i:s_') . 'ramais.csv';
+
         $file = fopen($filename, 'x+');
         $cabecalho = ['ID', 'Ramal', 'Descrição', 'Contexto', 'Tipo', 'Gravação', 'Senha'];
 
@@ -342,7 +361,8 @@ class Ramal extends DataRecord
             Transaction::close();
             if ($result > 0) return true;
             else return false;
-        } catch (PDOException $e) {
+        } 
+        catch (PDOException $e) {
             Transaction::rollback();
             print $e->getMessage();
         }

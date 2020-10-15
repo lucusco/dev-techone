@@ -23,6 +23,12 @@ trait ControllerAuxTrait
         return $html;
     }
 
+    /**
+     * Seta mensagens de retorno na variável de sessão
+     *
+     * @param string $mensagem Mensagem a ser exibida para o usuário
+     * @param string $tipo Tipo (tipos de alerta do Bootstrap)
+     */
     public function setaMensagemRetorno(string $mensagem, string $tipo): void
     {
         $_SESSION['tipo'] = $tipo;
