@@ -42,7 +42,7 @@
                         <a href="#" class="dropdown-item">Filas em uso</a>
                     </div>
                 </li>
-                <li class=""><a href="#" class="nav-link">Testes</a></li>
+                <li class=""><a href="#" class="nav-link">Configurações</a></li>
             </ul>
             <ul class="navbar-nav font-weight-bold mt-1">
                 <li class="nav-link active">Bem-vindo Fulano</li>

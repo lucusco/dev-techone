@@ -17,8 +17,7 @@ $routes = [
     'nova-fila' => '',
     'lista-fila' => '',
     'salvar-fila' => '',
-    'sair' => '',
-    'testes' => TesteConn::class,
+    'sair' => ''
 ];
 
 return $routes;
