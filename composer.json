@@ -1,0 +1,21 @@
+{
+    "name": "lucusco/techone",
+    "description": "Site TechOne",
+    "minimum-stability": "dev",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Luis Bueno",
+            "email": "lu.cusco@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Techone\\Lib\\": "Lib/"
+        },
+        "files": [
+            "Lib/Helper/Constantes.php"
+        ]
+    }
+}
