@@ -1,6 +1,6 @@
 ## Projeto techone
 
-Este é um projeto não comercial criado para aperfeiçoar o aprendizado da linguagem de programação PHP, portanto não deve ser utilizado em produção.
+Este é um projeto não comercial criado para aperfeiçoar o aprendizado da linguagem de programação PHP, portanto não deve ser utilizado em produção.  
 O nome dado a este projeto, Techone, não possui nenhuma relação comercial com qualquer outra empresa de mesmo nome, não é uma marca registrada e deve ser interpretado apenas como um exemplo.
 
 #### Conteito
@@ -19,8 +19,8 @@ As ferramentas utilizadas durante
 
 Caso queira contribuir com este projeto ou sugerir melhorias, sinta-se a vontade para me procurar.
 
-**Atenciosamente,**
-Luis Claudio Bueno
-_lu.cusco@gmail.com_
-_github.com/lucusco_
+**Atenciosamente,**  
+Luis Claudio Bueno  
+_lu.cusco@gmail.com_  
+_github.com/lucusco_  
 
