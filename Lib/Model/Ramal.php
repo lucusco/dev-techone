@@ -50,7 +50,6 @@ class Ramal extends DataRecord
 
     public function setExten($exten)
     {   
-        //var_dump($this);
         if (empty($exten) || $exten == '0') throw new Exception('Número do Ramal deve ser informado');
         else if (!is_numeric($exten)) throw new Exception('Número do Ramal deve ser numérico');
         else if (!is_int($exten + 0)) throw new Exception('Número do ramal inválido');

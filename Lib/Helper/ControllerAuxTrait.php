@@ -14,7 +14,6 @@ trait ControllerAuxTrait
      */
     public function renderizarHtml(string $qualRequire, $dados = []): string
     {
-        //var_dump($dados); //die();
         extract($dados);
         //Fazer com que o PHP comece a guardar tudo que será exibido
         ob_start();

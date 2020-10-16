@@ -68,7 +68,6 @@ class RamalControl implements InterfaceController
 
     public function persistir()
     {
-        var_dump($_GET);
         if (isset($_GET['id'])) {
             $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
             $acao = 'atualizado';
