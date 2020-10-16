@@ -133,8 +133,9 @@ class RamalControl implements InterfaceController
     }
 
     public function exportar()
-    {
-        $file = Ramal::exportarCsv();
+    { 
+        $file = isset($_GET['exemplo']) ? Ramal::exportarCsv(true) : Ramal::exportarCsv();
+        
         if (file_exists($file)) {
             header('Content-Description: File Transfer');
             header('Content-Type: application/octet-stream');

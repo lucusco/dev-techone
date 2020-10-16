@@ -110,7 +110,7 @@ class Ramal extends DataRecord
     public function setRecording($recording)
     {
         if (empty($recording)) throw new Exception('Gravação deve ser informada');
-        else if (!in_array($recording, array('sim', 'nao', 's', 'n'))) throw new Exception('Gravação mal especificada');
+        else if (!in_array($recording, array('sim', 'nao', 's', 'n', 'não'))) throw new Exception('Gravação mal especificada');
 
         if (strtolower($recording) == 'sim' || strtolower($recording) == 's') $this->recording = 'true';
         else $this->recording = 'false';            
@@ -304,25 +304,34 @@ class Ramal extends DataRecord
     }
 
     /**
-     *  Exporta todos os ramais para um arquivo .csv
+     *  Exporta todos os ramais para um arquivo .csv\
+     *  Possibilita exportar um arquivo de exemplo
      * 
+     *  @param bool $exemplo Indica se deve ser gerado um arquivo de exemplo
      *  @return false|string Retorna false caso não existam ramais; Retorna o path do arquivo em caso de sucesso
      */
-    public static function exportarCsv()
+    public static function exportarCsv($exemplo = false)
     {
-        $ramais = self::todosRamais();
-        if (!count($ramais) > 0) return false;
-
+        if (!$exemplo) {
+            $ramais = self::todosRamais();
+            if (!count($ramais) > 0) return false;
+        }
+        
         $filename = DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . date('H:i:s_') . 'ramais.csv';
-
         $file = fopen($filename, 'x+');
-        $cabecalho = ['ID', 'Ramal', 'Descrição', 'Contexto', 'Tipo', 'Gravação', 'Senha'];
 
+        $cabecalho = $exemplo == true ? ['Ramal', 'Descrição', 'Contexto', 'Tipo', 'Gravação', 'Senha'] :  ['ID', 'Ramal', 'Descrição', 'Contexto', 'Tipo', 'Gravação', 'Senha'];
         fputcsv($file, $cabecalho, ';', '"');
-        foreach ($ramais as $ramal) {
-            $ramal = (array)$ramal;
-            $ramal['recording'] = $ramal['recording'] == 'true' ? 'Sim' : 'Não';
-            fputcsv($file, $ramal, ';', '"');
+
+        if ($exemplo) {
+            $dadosExemplo = array('1363', 'Daniela', 'interno', 'SIP', 'Sim', '12#3Eds@');
+            fputcsv($file, $dadosExemplo, ';', '"');
+        } else {
+            foreach ($ramais as $ramal) {
+                $ramal = (array)$ramal;
+                $ramal['recording'] = $ramal['recording'] == 'true' ? 'Sim' : 'Não';
+                fputcsv($file, $ramal, ';', '"');
+            }
         }
         fclose($file);
         return $filename;

@@ -10,9 +10,11 @@
     <div class="m-3">
         <div class="jumbotron">
             <h1 class="display-5">Importar</h1>
-            <p class="lead">Faça o upload de uma planilha de ramais</p>
+            <p class="lead">Faça o upload de uma planilha de ramais 
+                <a class="btn btn-sm btn-outline-info" data-toggle="tooltip" data-placement="right" title="Arquivo de exemplo" href="importa-ramal?method=exportar&exemplo">?</a>
+            </p> 
             <hr class="my-3">
-            <p class="small">*Permitido arquivo CSV separado por ; e cabeçalho com seis colunas: Ramal, Nome, Senha, Gravar, Contexto, Tipo</p>  
+            <p class="small">*Permitido arquivo CSV separado por ; e cabeçalho com seis colunas: Ramal, Nome, Senha, Gravar, Contexto, Tipo</p>
             <form action="importa-ramal?method=importar" method="post" enctype="multipart/form-data">
                 <div class="custom-file w-50">
                     <input type="hidden" name="MAX_FILE_SIZE" value="3000000" />
