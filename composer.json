@@ -17,5 +17,8 @@
         "files": [
             "Lib/Helper/Constantes.php"
         ]
+    },
+    "require": {
+        "smarty/smarty": "~3.1"
     }
 }
