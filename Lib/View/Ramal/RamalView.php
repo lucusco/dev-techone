@@ -22,8 +22,8 @@ class RamalView
 
             case 'listar':
                 $template = 'ramalListagem.tpl';
-                $ramais = $params['ramais'];
-                $smarty->assign('ramais', $ramais);
+                $smarty->assign('ramais', $params['ramais']);
+                $smarty->assign('paginas', $params['quantidadePaginas']);
                 break;
 
             case 'editar':

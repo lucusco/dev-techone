@@ -63,9 +63,9 @@
         <div class="p-3">
             <nav aria-label="Navegacao">
                 <ul class="pagination">
-                    {* <?php for ($i = 0; $i < $quantidadePaginas; $i++): ?>
-                        <li class="page-item"><a class="page-link" href="lista-ramal?method=listar&page=<?=($i+1)?>"><?= ($i+1) ?></a></li> 
-                    <?php endfor; ?> *}
+                {for $i = 1 to $paginas}
+                    <li class="page-item"><a class="page-link" href="lista-ramal?method=listar&page={$i}">{$i}</a></li> 
+                {/for}
                 </ul>
             </nav>
         </div>

@@ -171,7 +171,7 @@ class Ramal extends DataRecord
                 ];
             } else { //consulta sem paginação
                 $stmt = $conn->query("SELECT * FROM extensions ORDER BY id");
-                $retorno = $stmt->fetchAll(PDO::FETCH_OBJ);
+                $retorno['ramais'] = $stmt->fetchAll(PDO::FETCH_OBJ);
             }
             Transaction::close();
             return $retorno;
@@ -313,7 +313,7 @@ class Ramal extends DataRecord
     {
         if (!$exemplo) {
             $ramais = self::todosRamais();
-            if (!count($ramais) > 0) return false;
+            if (!count($ramais['ramais']) > 0) return false;
         }
         
         $filename = DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . date('H:i:s_') . 'ramais.csv';
@@ -326,7 +326,7 @@ class Ramal extends DataRecord
             $dadosExemplo = array('1363', 'Daniela', 'interno', 'SIP', 'Sim', '12#3Eds@');
             fputcsv($file, $dadosExemplo, ';', '"');
         } else {
-            foreach ($ramais as $ramal) {
+            foreach ($ramais['ramais'] as $ramal) {
                 $ramal = (array)$ramal;
                 $ramal['recording'] = $ramal['recording'] == 'true' ? 'Sim' : 'Não';
                 fputcsv($file, $ramal, ';', '"');

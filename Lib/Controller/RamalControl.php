@@ -5,7 +5,6 @@ namespace Techone\Lib\Controller;
 use stdClass;
 use Exception;
 use Techone\Lib\Model\Ramal;
-use Techone\Lib\Helper\SmartyTechone;
 use Techone\Lib\View\Ramal\RamalView;
 use Techone\Lib\Helper\ControllerAuxTrait;
 use Techone\Lib\Controller\InterfaceController;
@@ -31,13 +30,13 @@ class RamalControl implements InterfaceController
         $pagina = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT);
         if (!is_int($pagina)) $pagina = 1;
 
-        $result = Ramal::todosRamais();
+        $result = Ramal::todosRamais($pagina);
         $mensagem = new stdClass;
 
-        if (count($result) > 0) {
+        if (count($result['ramais']) > 0) {
             $dados = [
-                'ramais' =>  $result,
-                //'quantidadePaginas' => $result['totalPaginas']
+                'ramais' =>  $result['ramais'],
+                'quantidadePaginas' => $result['totalPaginas']
             ];
         } else { //TODO - Tratar as mensagens de retorno
             $mensagem->tipo = 'info';
