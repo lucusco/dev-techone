@@ -2,8 +2,7 @@
 
 use Techone\Lib\Controller\{
     ExibirHome,
-    RamalControl,
-    TesteConn
+    RamalControl
 };
 
 $routes = [
