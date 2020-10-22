@@ -14,9 +14,9 @@ class SmartyTechone extends Smarty
         parent::__construct();
 
         $this->setTemplateDir(BASE_DIR . 'Resources/templates');
-        $this->setCompileDir(BASE_DIR . 'View/Smarty/templates_c');
-        $this->setConfigDir(BASE_DIR . 'View/Smarty/configs');
-        $this->setCacheDir(BASE_DIR . 'View/Smarty/cache');
+        $this->setCompileDir('../../smarty/templates_c');
+        $this->setConfigDir('../../smarty/configs');
+        $this->setCacheDir('../../smarty/cache');
 
         $this->caching = false;
         //$this->cache_lifetime = 120;
