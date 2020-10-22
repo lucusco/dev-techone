@@ -8,6 +8,11 @@ namespace Techone\Lib\Helper;
  */
 trait ControllerAuxTrait
 {
+    public function processarVisao()
+    {
+        
+    }
+
     /**
      *  Monta o HTML a ser exibido e o retorno
      * @return string
