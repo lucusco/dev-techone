@@ -37,6 +37,11 @@ class RamalView
                 $smarty->assign('titulo', 'Editar Ramal');
                 
                 break;
+            
+            case 'error':
+                $template = 'error.tpl';
+                $smarty->assign('mensagem', $params);
+                break;
         }
         $smarty->display($template); 
     }

@@ -147,4 +147,10 @@ class RamalControl implements InterfaceController
             header('Location: importa-ramal');
         }
     }
+
+    public static function renderizaErro($msg = '')
+    {
+        RamalView::renderizar('error', $msg);
+        die;
+    }
 }

@@ -7,6 +7,7 @@ use Exception;
 use PDOException;
 use DomainException;
 use Techone\Lib\Api\DataRecord;
+use Techone\Lib\Controller\RamalControl;
 use Techone\Lib\Database\Transaction;
 use Techone\Lib\Helper\ModelFunctionsTrait;
 
@@ -178,7 +179,7 @@ class Ramal extends DataRecord
 
         } catch (PDOException $e) {
             Transaction::rollback();
-            print $e->getMessage();
+            RamalControl::renderizaErro($e->getMessage());
         }
     }
 
@@ -195,7 +196,7 @@ class Ramal extends DataRecord
             return $result;
         } catch (PDOException $e) {
             Transaction::rollback();
-            print $e->getMessage(); //TODO : Logar essas mensagens
+            RamalControl::renderizaErro($e->getMessage());
         } catch (DomainException $e) {
             print $e->getMessage();
         }
@@ -218,7 +219,7 @@ class Ramal extends DataRecord
             return $result;
         } catch (PDOException $e) {
             Transaction::rollback();
-            print $e->getMessage();
+            RamalControl::renderizaErro($e->getMessage());
         }
     }
 
@@ -372,7 +373,7 @@ class Ramal extends DataRecord
         } 
         catch (PDOException $e) {
             Transaction::rollback();
-            print $e->getMessage();
+            RamalControl::renderizaErro($e->getMessage());
         }
     }
 
@@ -393,7 +394,7 @@ class Ramal extends DataRecord
             return $max;
         } catch (PDOException $e) {
             Transaction::rollback();
-            print $e->getMessage();
+            RamalControl::renderizaErro($e->getMessage());
         }
     }
 }

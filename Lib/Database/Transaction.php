@@ -2,6 +2,9 @@
 
 namespace Techone\Lib\Database;
 
+use Exception;
+use PDO;
+use PDOException;
 use Techone\Lib\Database\Connection;
 
 /**
@@ -18,12 +21,16 @@ class Transaction
 
     /**
      *  Atribui uma conexão à variável conn
+     * 
+     * @throws PDOException Se o retorno não for uma conexão PDO
      */
     public static function openConnection()
     {
         if (empty(self::$conn)) {
-            self::$conn = Connection::conectar();
-            self::$conn->beginTransaction();
+            if ((self::$conn = Connection::conectar()) instanceof PDO) 
+                self::$conn->beginTransaction();
+            else
+                throw new PDOException('Erro ao conectar com o banco de dados.');
         }
     }
 
