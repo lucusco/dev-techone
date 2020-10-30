@@ -10,3 +10,6 @@ querys.sql
 # Smarty cache e templates_compilados
 cache/
 templates_c/
+
+Files/
+
