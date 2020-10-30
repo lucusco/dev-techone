@@ -146,6 +146,6 @@ class RamalControl implements InterfaceController
     public static function renderizaErro($msg = '')
     {
         RamalView::renderizar('error', $msg);
-        //die;
+        die;
     }
 }
