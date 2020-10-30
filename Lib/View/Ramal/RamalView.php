@@ -6,43 +6,60 @@ use Techone\Lib\Helper\SmartyTechone;
 
 class RamalView
 {
+    private static $smarty;
+
     public static function renderizar($view, $params = '')
     {
-        $smarty = new SmartyTechone;
+        self::$smarty = new SmartyTechone;
 
         switch($view) {
             case 'novo-ramal': 
                 $template = 'ramalAdd.tpl';
-                $smarty->assign('titulo', 'Novo Ramal');
+                self::$smarty->assign('titulo', 'Novo Ramal');
                 break;
 
             case 'importa-ramal':
                 $template = 'ramalImport.tpl';
+                self::verificaMsgErro();
                 break;
 
             case 'listar':
                 $template = 'ramalListagem.tpl';
-                $smarty->assign('ramais', $params['ramais']);
-                $smarty->assign('paginas', $params['quantidadePaginas']);
+                if (isset($params['ramais'])) {
+                    self::$smarty->assign('ramais', $params['ramais']);
+                    self::$smarty->assign('paginas', $params['quantidadePaginas']);
+                }
+                self::verificaMsgErro();
                 break;
 
             case 'editar':
                 $template = 'ramalAdd.tpl';
-                $smarty->assign('titulo', 'Editar Ramal');
-                $smarty->assign('ramal', $params['ramal']);
+                self::$smarty->assign('titulo', 'Editar Ramal');
+                self::$smarty->assign('ramal', $params['ramal']);
+                self::verificaMsgErro();
                 break;
             
             case 'persistir':
                 $template = 'ramalAdd.tpl';
-                $smarty->assign('titulo', 'Editar Ramal');
-                
+                self::$smarty->assign('ramal', $params['ramal']);
+                self::$smarty->assign('titulo', 'Editar Ramal');
+                self::verificaMsgErro();
                 break;
             
             case 'error':
                 $template = 'error.tpl';
-                $smarty->assign('mensagem', $params);
+                self::$smarty->assign('mensagem', $params);
                 break;
         }
-        $smarty->display($template); 
+        self::$smarty->display($template); 
+    }
+
+    private static function verificaMsgErro()
+    {
+        if (isset($_SESSION['flash'])) {
+            self::$smarty->assign('tipo', $_SESSION['flash']['tipo']);
+            self::$smarty->assign('mensagem', $_SESSION['flash']['msg']);
+            unset($_SESSION['flash']); 
+        } 
     }
 }

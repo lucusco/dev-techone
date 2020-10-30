@@ -60,6 +60,7 @@
                 </tbody>
             </table>
         </div>
+        {if isset($paginas)}
         <div class="p-3">
             <nav aria-label="Navegacao">
                 <ul class="pagination">
@@ -69,7 +70,8 @@
                 </ul>
             </nav>
         </div>
+        {/if}
     <script>
-        {include file="../js/ramalListagem.js"}
+        {include file="../js/ramal.js"}
     </script>
 {include file="html-fim.tpl"}

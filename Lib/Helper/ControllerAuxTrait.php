@@ -33,9 +33,15 @@ trait ControllerAuxTrait
      * @param string $mensagem Mensagem a ser exibida para o usuário
      * @param string $tipo Tipo (tipos de alerta do Bootstrap)
      */
-    public function setaMensagemRetorno(string $mensagem, string $tipo): void
+    public function setaMensagemRetorno(string $tipo, string $mensagem): void
     {
-        $_SESSION['tipo'] = $tipo;
-        $_SESSION['msg']  = $mensagem;
+        if (!isset($_SESSION['flash'])) {
+            $_SESSION['flash'] = [];
+        }
+
+        $_SESSION['flash'] = [
+            'tipo' => $tipo,
+            'msg'  => $mensagem
+        ];
     }
 }

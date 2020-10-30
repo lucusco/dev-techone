@@ -29,6 +29,6 @@
         </div>
     </div>
     <script>
-        {include file="../js/ramalImport.js"}
+        {include file="../js/ramal.js"}
     </script>
 {include file="html-fim.tpl"}

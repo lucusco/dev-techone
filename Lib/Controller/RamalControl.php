@@ -2,7 +2,6 @@
 
 namespace Techone\Lib\Controller;
 
-use stdClass;
 use Exception;
 use Techone\Lib\Model\Ramal;
 use Techone\Lib\View\Ramal\RamalView;
@@ -25,23 +24,21 @@ class RamalControl implements InterfaceController
         }
     }
 
-    public function listar() //TODO - tratar a paginação
+    public function listar()
     {
         $pagina = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT);
         if (!is_int($pagina)) $pagina = 1;
 
+        $dados = array();
         $result = Ramal::todosRamais($pagina);
-        $mensagem = new stdClass;
 
         if (count($result['ramais']) > 0) {
             $dados = [
                 'ramais' =>  $result['ramais'],
                 'quantidadePaginas' => $result['totalPaginas']
             ];
-        } else { //TODO - Tratar as mensagens de retorno
-            $mensagem->tipo = 'info';
-            $mensagem->texto = "Nenhum ramal criado até o momento";
-            $dados['mensagemRetorno'] = $mensagem;
+        } else {
+            $this->setaMensagemRetorno('info', "Nenhum ramal criado até o momento");  
         }
         
         RamalView::renderizar('listar', $dados);   
@@ -84,23 +81,21 @@ class RamalControl implements InterfaceController
             $ramal->setSecret($dados['senha']);
             $ramal->setContext($dados['context']);
             $ramal->setTech($dados['tech']);
-            $gravar = $dados['gravacao'] == 'on' ? 'sim' : 'nao';
-            $ramal->setRecording($gravar);
+            $ramal->setRecording();
         } catch (Exception $e) {
             $gerouException = true;
-            //Resgatar dados deste ID do BD e chamar a view de edição
             $ramal = $ramal->carregarRamal($id);
-            $mensagem = new stdClass();
-            $mensagem->tipo = 'danger';
-            $mensagem->texto = "Não foi possível realizar a ação com o ramal {$ramal->exten}";   
+            $this->setaMensagemRetorno('error', "{$e->getMessage()}");  
             $dados['ramal'] = $ramal;
-            $dados['mensagemRetorno'] = $mensagem;
             RamalView::renderizar('persistir', $dados);
         }
         
         if (!$gerouException) {
             $result = $ramal->persistir();
-            //TODO Validar retorno e setar mensagens de retorno
+            if ($result)
+                $this->setaMensagemRetorno('success', "Ramal {$dados['ramal']} $acao com sucesso!");  
+            else 
+                $this->setaMensagemRetorno('error', "Houve erro ao salvar o ramal");  
             
             header("Location: $location");
         }
@@ -109,10 +104,10 @@ class RamalControl implements InterfaceController
     public function remover()
     {
         $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
-        Ramal::removerRamal($id);
+        $err = Ramal::removerRamal($id);
 
-        /* if (Ramal::removerRamal($id)) $this->setaMensagemRetorno('Ramal removido com sucesso', 'success');
-        else $this->setaMensagemRetorno('Houve um erro ao remover o ramal, contate o administrador.', 'danger'); */
+        if ($err) $this->setaMensagemRetorno('success', 'Ramal removido com sucesso');
+        else $this->setaMensagemRetorno('error', 'Houve um erro ao remover o ramal, contate o administrador.');
         
         header('Location: lista-ramal?method=listar');
     }
@@ -120,10 +115,10 @@ class RamalControl implements InterfaceController
     public function importar()
     {
         $err = Ramal::importarRamal($_FILES);
-        if ($err === true) $this->setaMensagemRetorno('Planilha de ramais importada com sucesso!', 'success');
+        if ($err === true) $this->setaMensagemRetorno('success', 'Planilha de ramais importada com sucesso!');
         else {
             $err = is_string($err) ? $err : 'Houve erro ao importar a planilha de ramais, contate o administrador';
-            //$this->setaMensagemRetorno("$err", 'danger');
+            $this->setaMensagemRetorno('error', "$err");
             Ramal::removerCsv();
         }
         header('Location: importa-ramal');
@@ -143,7 +138,7 @@ class RamalControl implements InterfaceController
             readfile($file);
             // TODO Ver uma outra de enviar mensagem nesse caso, se eu fizer outro header o arquivo não baixa
         } else {
-            //$this->setaMensagemRetorno('A planilha não foi exportada porque não há ramais criados', 'danger');
+            $this->setaMensagemRetorno('info', 'A planilha não foi exportada porque não há ramais criados');
             header('Location: importa-ramal');
         }
     }
@@ -151,6 +146,6 @@ class RamalControl implements InterfaceController
     public static function renderizaErro($msg = '')
     {
         RamalView::renderizar('error', $msg);
-        die;
+        //die;
     }
 }
