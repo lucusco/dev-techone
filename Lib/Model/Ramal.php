@@ -139,7 +139,7 @@ class Ramal extends DataRecord
 
         } catch (PDOException $e) {
             Transaction::rollback();
-            print $e->getMessage();
+            RamalControl::renderizaErro($e->getMessage());
         }
     }
 
