@@ -107,13 +107,19 @@ class Ramal extends DataRecord
         return $this->recording;
     }
 
-    public function setRecording($recording)
+    public function setRecording($recording = '')
     {
-        if (empty($recording)) throw new Exception('Gravação deve ser informada');
-        else if (!in_array($recording, array('sim', 'nao', 's', 'n', 'não'))) throw new Exception('Gravação mal especificada');
-
-        if (strtolower($recording) == 'sim' || strtolower($recording) == 's') $this->recording = 'true';
-        else $this->recording = 'false';            
+        if (empty($recording) && !isset($_POST['gravacao'])) {
+            throw new Exception('Gravação deve ser informada');
+        } else {
+            $recording = !empty($recording) ? $recording : $_POST['gravacao'];
+        }
+        
+        if (!in_array($recording, array('sim', 'nao', 's', 'n', 'não', 'on', 'off'))) {
+            throw new Exception('Gravação não especificada. Tipos permitidos são: sim, nao, s, n, não');
+        } else {
+            strtolower($recording) == 'sim' || strtolower($recording) == 's' || $_POST['gravacao'] == 'on' ? $this->recording = 'true' : $this->recording = 'false'; 
+        }
     }
 
     /**
