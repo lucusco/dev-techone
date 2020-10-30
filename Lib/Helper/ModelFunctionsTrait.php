@@ -13,10 +13,8 @@ trait ModelFunctionsTrait
     {
         $data = array();
         foreach ($this as $attr => $value) {
-            $data[$attr] = $value;    
+            $data[$attr] = $value;
         }
-        return $data; 
+        return $data;
     }
-
-
 }

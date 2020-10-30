@@ -8,10 +8,6 @@ namespace Techone\Lib\Helper;
  */
 trait ControllerAuxTrait
 {
-    public function processarVisao()
-    {
-        
-    }
 
     /**
      *  Monta o HTML a ser exibido e o retorno
@@ -31,7 +27,7 @@ trait ControllerAuxTrait
      * Seta mensagens de retorno na variável de sessão
      *
      * @param string $mensagem Mensagem a ser exibida para o usuário
-     * @param string $tipo Tipo (tipos de alerta do Bootstrap)
+     * @param string $tipo Tipo (tipos de alerta do Bootstrap/SweetAlert)
      */
     public function setaMensagemRetorno(string $tipo, string $mensagem): void
     {
