@@ -65,8 +65,12 @@ class Ramal extends DataRecord
 
     public function setUsername($username)
     {
-        if (empty($username)) throw new Exception('Descrição deve ser informada');
-        else $this->username = $username;
+        if (empty($username)) 
+            throw new Exception('Descrição deve ser informada');
+        else {
+            $username = filter_var($username, FILTER_SANITIZE_STRING);
+            $this->username = $username;
+        }
     }
 
     public function getSecret()
@@ -76,8 +80,12 @@ class Ramal extends DataRecord
 
     public function setSecret($secret)
     {
-        if (empty($secret) || strlen($secret) < 4) throw new Exception('Senha deve ser informada e deve ter mais pelo menos 4 caracteres');
-        else $this->secret = $secret;
+        if (empty($secret) || strlen($secret) < 4) 
+            throw new Exception('Senha deve ser informada e deve ter mais pelo menos 4 caracteres');
+        else {
+            $secret = filter_var($secret, FILTER_SANITIZE_STRING);
+            $this->secret = $secret;
+        }
     }
 
     public function getContext()
@@ -87,8 +95,12 @@ class Ramal extends DataRecord
 
     public function setContext($context)
     {
-        if (empty($context)) throw new Exception('Context deve ser informado');
-        else $this->context = strtolower($context);
+        if (empty($context)) 
+            throw new Exception('Context deve ser informado');
+        else {
+            $context = filter_var($context, FILTER_SANITIZE_STRING);
+            $this->context = strtolower($context);
+        }
     }
 
     public function getTech()
@@ -98,8 +110,12 @@ class Ramal extends DataRecord
 
     public function setTech($tech)
     {
-        if (empty($tech)) throw new Exception('Tecnologia deve ser informada');
-        $this->tech = strtoupper($tech);
+        if (empty($tech)) 
+            throw new Exception('Tecnologia deve ser informada');
+        else {
+            $tech = filter_var($tech, FILTER_SANITIZE_STRING);
+            $this->tech = strtoupper($tech);
+        }
     }
 
     public function getRecording()
@@ -361,7 +377,9 @@ class Ramal extends DataRecord
     public static function importarRamal(array $files)
     {
         $ramaisImportar = self::preparaCsv($files);
-        if (!is_array($ramaisImportar)) return $ramaisImportar;
+        if (!is_array($ramaisImportar)) 
+            return $ramaisImportar;
+
         $query = '';
         foreach ($ramaisImportar as $ramal) {
             $ramal = parent::prepare($ramal->toArray());
