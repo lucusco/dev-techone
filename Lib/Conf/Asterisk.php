@@ -58,11 +58,16 @@ allowguest=no\n";
     {
         $linha = "
 [{$ramal->exten}]
+callerid=\"{$ramal->username}\" <{$ramal->exten}>
 type=friend
 secret={$ramal->secret}
 host=dynamic
 qualify=yes
 directmedia=no
+nat=yes
+dtmfmode=rfc2833
+insecure=invite,port
+canreinvite=yes
 context={$ramal->context}\n";
         
         return $linha;
