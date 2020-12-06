@@ -342,7 +342,7 @@ class Ramal extends DataRecord
         $filename = DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . date('H:i:s_') . 'ramais.csv';
         $file = fopen($filename, 'x+');
 
-        $cabecalho = $exemplo == true ? ['Ramal', 'Descrição', 'Contexto', 'Tipo', 'Gravação', 'Senha'] :  ['ID', 'Ramal', 'Descrição', 'Contexto', 'Tipo', 'Gravação', 'Senha'];
+        $cabecalho = $exemplo == true ? ['Ramal', 'Nome', 'Contexto', 'Tipo', 'Gravar', 'Senha'] :  ['ID', 'Ramal', 'Nome', 'Contexto', 'Tipo', 'Gravar', 'Senha'];
         fputcsv($file, $cabecalho, ';', '"');
 
         if ($exemplo) {
