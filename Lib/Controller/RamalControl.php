@@ -4,6 +4,7 @@ namespace Techone\Lib\Controller;
 
 use Exception;
 use Techone\Lib\Model\Ramal;
+use Techone\Lib\Conf\Asterisk;
 use Techone\Lib\View\Ramal\RamalView;
 use Techone\Lib\Helper\ControllerAuxTrait;
 use Techone\Lib\Controller\InterfaceController;
@@ -19,6 +20,9 @@ class RamalControl implements InterfaceController
             case 'novo-ramal':             
             case 'importa-ramal':
                 RamalView::renderizar($_GET['url']);
+                break;
+            case 'escreveArqs':
+                Asterisk::escreveConf();
                 break;
             //TODO Criar um default se nao achar pra onde direcionar
         }

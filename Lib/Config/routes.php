@@ -16,7 +16,8 @@ $routes = [
     'nova-fila' => '',
     'lista-fila' => '',
     'salvar-fila' => '',
-    'sair' => ''
+    'sair' => '',
+    'escreveArqs' =>  RamalControl::class
 ];
 
 return $routes;
