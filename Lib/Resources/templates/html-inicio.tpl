@@ -11,23 +11,7 @@
     <script src="{$css_dir}popper.min.js"></script>
     <script src="{$css_dir}bootstrap.min.js"></script>
     <script src="{$css_dir}sweetalert.min.js"></script>
-
-    <style>
-        .sidebar {
-            box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
-        /*position: fixed;
-        /*top: 0;   
-        bottom: 0;
-        left: 0;
-        z-index: 1;
-        padding: 48px 0 0;
-        box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1); */
-        }
-        .borda {
-            border: 1px solid red;
-        }
-    </style>
-
+    
     <title>techoOne</title>
 </head>
 <body>

@@ -16,3 +16,7 @@ fieldset {
     background-color: #f8f8f8;
 }
 
+.borda {
+    border: 1px solid red;
+}
+
