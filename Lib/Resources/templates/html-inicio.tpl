@@ -6,8 +6,7 @@
     <link rel="stylesheet" type="text/css" href="{$css_dir}bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="{$css_dir}estilo.css">
     <link rel="stylesheet" type="text/css" href="{$css_dir}sidebar.css">
-    <link rel="icon" type="image/png" href="assets/favicon.ico">
-    <link rel="icon" type="image/png" href="assets/favicon.ico">
+    <link rel="icon" type="image/svg" href="assets/images/asterisk-icon.svg">
     <!-- Bootstrap JS -->
     <script src="{$css_dir}jquery.min.js"></script>
     <script src="{$css_dir}popper.min.js"></script>
