@@ -4,19 +4,18 @@ nav {
     /* font-family: 'Noto Sans KR', sans-serif; */
     font-family: 'Ubuntu', sans-serif;
 }
-
+/* 
 body {
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-}
+} */
 
 fieldset {
-    margin: 1em 1em;
-    padding: 1em;
-    border: 1px solid #ccc;
-    background-color: #f8f8f8;
+    /* margin: 1em !important;  */
+    padding: 1em !important;
+    /* border: 1px solid #ccc !important; */
+    background-color: #e9ecef !important;
 }
 
 .borda {
     border: 1px solid red;
 }
-
