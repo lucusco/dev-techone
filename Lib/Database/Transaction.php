@@ -24,14 +24,14 @@ class Transaction
      * 
      * @throws PDOException Se o retorno não for uma conexão PDO
      */
-    public static function openConnection()
+    public static function openConnection() //TODO mudar para private após refactoring
     {
         if (empty(self::$conn)) {
-            if ((self::$conn = Connection::conectar()) instanceof PDO) 
-                self::$conn->beginTransaction();
-            else
+            self::$conn = Connection::conectar();
+            if (!self::$conn instanceof PDO) 
                 throw new PDOException('Erro ao conectar com o banco de dados.');
         }
+        return self::$conn;
     }
 
     /**
@@ -41,7 +41,20 @@ class Transaction
      */
     public static function getConnection()
     {
+        if (empty(self::$conn)) {
+            self::$conn = self::openConnection();
+        }
         return self::$conn;
+    }
+
+    /**
+     *  Inicia transações
+     */
+    public static function begin()
+    {
+        if (self::$conn) {
+            self::$conn->beginTransaction();
+        }
     }
 
     /**

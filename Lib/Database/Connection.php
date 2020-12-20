@@ -11,6 +11,9 @@ use PDOException;
  */
 class Connection
 {
+    /** @var PDO conn */
+    public static $conn;
+
     private function __construct()
     {
     }
@@ -26,7 +29,6 @@ class Connection
         extract($dados);
 
         if (empty($host) || empty($user) || empty($password) || empty($dbname) || empty($port) || empty($type)) {
-            //Erro
             throw new Exception("Erro ao conectar com o banco de dados, contate o Luis");
         }
         try {
@@ -39,10 +41,35 @@ class Connection
                     break;
             }
             $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $connection->setAttribute(PDO::ATTR_CASE, PDO::CASE_NATURAL);
             //$connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
             return $connection;
-        } catch (Exception $e) {
-            return false;
+        } catch (PDOException $e) {
+            return $e->getMessage();
         }
     }
+
+    private static function openConnection() //TODO mudar para private após refactoring
+    {
+        if (empty(self::$conn)) {
+            self::$conn = self::conectar();
+            if (!self::$conn instanceof PDO) 
+                throw new PDOException('Erro ao conectar com o banco de dados.');
+        }
+        return self::$conn;
+    }
+
+    /**
+     *  Retorna a conexão
+     * 
+     * @return PDO conn
+     */
+    public static function getConnection()
+    {
+        if (empty(self::$conn)) {
+            self::$conn = self::openConnection();
+        }
+        return self::$conn;
+    }
+    
 }
