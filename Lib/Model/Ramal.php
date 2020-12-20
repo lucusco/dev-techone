@@ -9,6 +9,7 @@ use DomainException;
 use Techone\Lib\Api\DataRecord;
 use Techone\Lib\Controller\RamalControl;
 use Techone\Lib\Database\Transaction;
+use Techone\Lib\Database\Connection;
 use Techone\Lib\Helper\ModelFunctionsTrait;
 
 /**
@@ -196,11 +197,10 @@ class Ramal extends DataRecord
                 $stmt = $conn->query("SELECT * FROM extensions ORDER BY id");
                 $retorno['ramais'] = $stmt->fetchAll(PDO::FETCH_OBJ);
             }
-            Transaction::close();
+            
             return $retorno;
 
         } catch (PDOException $e) {
-            Transaction::rollback();
             RamalControl::renderizaErro($e->getMessage());
         }
     }
@@ -212,12 +212,9 @@ class Ramal extends DataRecord
     public function persistir()
     {
         try {
-            Transaction::openConnection();
             $result = $this->store($this->toArray());
-            Transaction::close();
             return $result;
         } catch (PDOException $e) {
-            Transaction::rollback();
             RamalControl::renderizaErro($e->getMessage());
         } catch (DomainException $e) {
             print $e->getMessage();

@@ -5,6 +5,7 @@ namespace Techone\Lib\Api;
 use PDO;
 use DomainException;
 use Techone\Lib\Database\Transaction;
+use Techone\Lib\Database\Connection;
 
 /**
  *  Layer Supertype Pattern - baseada em Active Record\
@@ -48,7 +49,7 @@ abstract class DataRecord
             $sql .= "WHERE id = {$object['id']}";
         }
 
-        if ($conn = Transaction::getConnection()) {
+        if ($conn = Connection::getConnection()) {
             $result = $conn->exec($sql);
             return $result;
         } else {
@@ -125,12 +126,10 @@ abstract class DataRecord
      */
     public function jaExiste($coluna, $valor, $id)
     {        
-        Transaction::openConnection();
         $sql = "SELECT id FROM {$this->getEntity()} WHERE $coluna = $valor";
-        $conn = Transaction::getConnection();
+        $conn = Connection::getConnection();
         $stmt = $conn->query($sql);
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        Transaction::close();
 
         // Validações com base no id retornado
         if (!$result) return false;
