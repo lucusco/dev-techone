@@ -21,9 +21,7 @@ class RamalControl implements InterfaceController
             case 'importa-ramal':
                 RamalView::renderizar($_GET['url']);
                 break;
-            case 'escreveArqs':
-                Asterisk::escreveConf();
-                break;
+                
             //TODO Criar um default se nao achar pra onde direcionar
         }
     }

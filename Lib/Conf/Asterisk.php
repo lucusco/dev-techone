@@ -20,7 +20,7 @@ allowguest=no\n";
      * Escreve arquivo de configuração sip.conf
      * @return true|false
      */
-    public static function escreveConf()
+    public static function escreveConfRamais(): bool
     {
         $ramais = Ramal::todosRamais();
        
@@ -34,7 +34,7 @@ allowguest=no\n";
             if (!$file = fopen($filename, 'w'))
                 return false;
 
-            $infoGeral = ";Arquivo gerado automaticamente em " . date('d-m-Y H:i:s') . self::$generalOptions;
+            $infoGeral = ";Arquivo gerado automaticamente em " . date('d-m-Y H:i:s') . "\n" . self::$generalOptions;
             if (fwrite($file, $infoGeral) === FALSE)
                 return false;
 
@@ -54,7 +54,7 @@ allowguest=no\n";
      * @param object $ramal
      * @return string
      */
-    private static function montaExten($ramal)
+    private static function montaExten($ramal): string
     {
         $linha = "
 [{$ramal->exten}]

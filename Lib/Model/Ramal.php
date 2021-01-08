@@ -6,9 +6,10 @@ use PDO;
 use Exception;
 use PDOException;
 use DomainException;
+use Techone\Lib\Conf\Asterisk;
 use Techone\Lib\Api\DataRecord;
-use Techone\Lib\Controller\RamalControl;
 use Techone\Lib\Database\Connection;
+use Techone\Lib\Controller\RamalControl;
 use Techone\Lib\Helper\ModelFunctionsTrait;
 
 /**
@@ -208,6 +209,9 @@ class Ramal extends DataRecord
     {
         try {
             $result = $this->store($this->toArray());
+            if ($result) {
+                Asterisk::escreveConfRamais();
+            }
             return $result;
         } catch (PDOException $e) {
             RamalControl::renderizaErro($e->getMessage());
