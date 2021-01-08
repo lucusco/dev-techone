@@ -13,6 +13,7 @@ class Connection
 {
     /** @var PDO conn */
     public static $conn;
+    public static $msgFail;
 
     private function __construct()
     {
@@ -21,9 +22,9 @@ class Connection
     /**
      * Faz o parse das informações de conexão com o banco e a retorna a conexão ou false em caso de falha
      *
-     * @return PDO|false
+     * @return PDO|null
      */
-    public static function conectar()
+    private static function conectar(): ?PDO
     {
         $dados = parse_ini_file(BASE_DIR . 'Config/techone.ini');
         extract($dados);
@@ -45,16 +46,17 @@ class Connection
             //$connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
             return $connection;
         } catch (PDOException $e) {
-            return $e->getMessage();
+            self::erroPDO($e);
+            return null;
         }
     }
 
-    private static function openConnection() //TODO mudar para private após refactoring
+    private static function openConnection()
     {
         if (empty(self::$conn)) {
             self::$conn = self::conectar();
             if (!self::$conn instanceof PDO) 
-                throw new PDOException('Erro ao conectar com o banco de dados.');
+                throw new PDOException(self::$msgFail);
         }
         return self::$conn;
     }
@@ -72,4 +74,45 @@ class Connection
         return self::$conn;
     }
     
+    /**
+     *  Inicia transação
+     */
+    public static function begin()
+    {
+        if (self::$conn) {
+            self::$conn->beginTransaction();
+        }
+    }
+
+    /**
+     *  Commitar alterações feitas via transação
+     */
+    public static function close()
+    {
+        if (self::$conn) {
+            self::$conn->commit();
+            self::$conn = NULL;
+        }
+    }
+
+    /**
+     * Desfaz alterações em caso de falha em transação
+     */
+    public static function rollback()
+    {
+        if (self::$conn) {
+            self::$conn->rollback();
+            self::$conn = NULL;
+        }
+    }
+
+
+    private static function erroPDO(PDOException $e)
+    {
+        $erro = "Mensagem: {$e->getMessage()}\n".
+        "Arquivo: {$e->getFile()}\n".
+        "Linha: {$e->getLine()}";
+
+        self::$msgFail = $erro;
+    }
 }

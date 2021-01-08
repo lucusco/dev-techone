@@ -2,10 +2,7 @@
 
 namespace Techone\Lib\Database;
 
-use Exception;
 use PDO;
-use PDOException;
-use Techone\Lib\Database\Connection;
 
 /**
  *  Responsabilidae de servir conexões
@@ -17,34 +14,6 @@ class Transaction
 
     private function __construct()
     {
-    }
-
-    /**
-     *  Atribui uma conexão à variável conn
-     * 
-     * @throws PDOException Se o retorno não for uma conexão PDO
-     */
-    public static function openConnection() //TODO mudar para private após refactoring
-    {
-        if (empty(self::$conn)) {
-            self::$conn = Connection::conectar();
-            if (!self::$conn instanceof PDO) 
-                throw new PDOException('Erro ao conectar com o banco de dados.');
-        }
-        return self::$conn;
-    }
-
-    /**
-     *  Retorna a conexão
-     * 
-     * @return PDO conn
-     */
-    public static function getConnection()
-    {
-        if (empty(self::$conn)) {
-            self::$conn = self::openConnection();
-        }
-        return self::$conn;
     }
 
     /**

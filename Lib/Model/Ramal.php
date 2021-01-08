@@ -8,7 +8,6 @@ use PDOException;
 use DomainException;
 use Techone\Lib\Api\DataRecord;
 use Techone\Lib\Controller\RamalControl;
-use Techone\Lib\Database\Transaction;
 use Techone\Lib\Database\Connection;
 use Techone\Lib\Helper\ModelFunctionsTrait;
 
@@ -147,15 +146,11 @@ class Ramal extends DataRecord
     public function carregarRamal($id = null)
     {
         try {
-            Transaction::openConnection();
             if ($id) {
                 $ramal = $this->load($id);
-                Transaction::close();
                 return $ramal;
             }
-
         } catch (PDOException $e) {
-            Transaction::rollback();
             RamalControl::renderizaErro($e->getMessage());
         }
     }
@@ -168,9 +163,9 @@ class Ramal extends DataRecord
     public static function todosRamais(int $pagina=NULL)
     {
         try {
-            Transaction::openConnection();
+
             /** @var \PDO conn */
-            $conn = Transaction::getConnection();
+            $conn = Connection::getConnection();
 
             if ($pagina) { //consulta com paginacao
                 $busca = "SELECT * FROM extensions ORDER BY id";
@@ -197,7 +192,7 @@ class Ramal extends DataRecord
                 $stmt = $conn->query("SELECT * FROM extensions ORDER BY id");
                 $retorno['ramais'] = $stmt->fetchAll(PDO::FETCH_OBJ);
             }
-            
+
             return $retorno;
 
         } catch (PDOException $e) {
@@ -229,15 +224,12 @@ class Ramal extends DataRecord
     public static function removerRamal(int $id)
     {
         try {
-            Transaction::openConnection();
             /** @var \PDO conn */
-            $conn = Transaction::getConnection();
+            $conn = Connection::getConnection();
             $sql = "DELETE FROM extensions WHERE id = {$id}";
             $result = $conn->exec($sql);
-            Transaction::close();
             return $result;
         } catch (PDOException $e) {
-            Transaction::rollback();
             RamalControl::renderizaErro($e->getMessage());
         }
     }
@@ -384,16 +376,13 @@ class Ramal extends DataRecord
                 ' VALUES (' . implode(', ', array_values($ramal)) . '); ';
         }
         try {
-            Transaction::openConnection();
             /** @var PDO conn */
-            $conn = Transaction::getConnection();
+            $conn = Connection::getConnection();
             $result = $conn->exec($query);
-            Transaction::close();
             if ($result > 0) return true;
             else return false;
         } 
         catch (PDOException $e) {
-            Transaction::rollback();
             RamalControl::renderizaErro($e->getMessage());
         }
     }
@@ -406,15 +395,12 @@ class Ramal extends DataRecord
     private static function proximoId(): int
     {
         try {
-            Transaction::openConnection();
-            $conn = Transaction::getConnection();
+            $conn = Connection::getConnection();
             $stmt = $conn->query("SELECT COALESCE(max(id), 0) AS ultimo FROM extensions");
             $result = $stmt->fetch();
             $max = $result['ultimo'] + 1;
-            Transaction::close();
             return $max;
         } catch (PDOException $e) {
-            Transaction::rollback();
             RamalControl::renderizaErro($e->getMessage());
         }
     }

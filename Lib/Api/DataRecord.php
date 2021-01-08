@@ -4,7 +4,6 @@ namespace Techone\Lib\Api;
 
 use PDO;
 use DomainException;
-use Techone\Lib\Database\Transaction;
 use Techone\Lib\Database\Connection;
 
 /**
@@ -69,7 +68,7 @@ abstract class DataRecord
     {
         $sql = isset($id) ? "SELECT $coluna FROM {$this->getEntity()} WHERE id = $id" : "SELECT $coluna FROM {$this->getEntity()} ORDER BY $order";
         
-        if ($conn = Transaction::getConnection()) {
+        if ($conn = Connection::getConnection()) {
             $stmt = $conn->query($sql);
             $tipoFetch = is_numeric($id) ? 'fetch' : 'fetchAll';
             return $stmt->$tipoFetch(PDO::FETCH_OBJ);
@@ -83,8 +82,7 @@ abstract class DataRecord
      */
     private function getProximoId(): int
     {
-        //Transaction::openConnection();
-        $conn = Transaction::getConnection();
+        $conn = Connection::getConnection();
         $stmt = $conn->query("SELECT COALESCE(max(id), 0) AS ultimo FROM {$this->getEntity()}");
         $result = $stmt->fetch();
         return $result['ultimo'] + 1;
