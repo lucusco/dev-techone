@@ -12,7 +12,10 @@
     <script src="{$css_dir}popper.min.js"></script>
     <script src="{$css_dir}bootstrap.min.js"></script>
     <script src="{$css_dir}sweetalert.min.js"></script>
-
+    
+    <!-- Font Awesome -->
+    {* <link rel="stylesheet" type="text/css" href="{$css_dir}awesomefonts-all.min.css">
+    <link rel="stylesheet" type="text/css" href="{$css_dir}awesomefonts-solid.min.css"> *}
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     
     <title>techoOne</title>
@@ -57,22 +60,34 @@
                         </a>
                         <div class="sb-sidenav-menu-heading">Cadastros</div>
                         <!-- Menu Ramais -->
-                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-                            <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayoutsRamais" aria-expanded="false" aria-controls="collapseLayouts">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tty"></i></div>
                             Ramais
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
-                        <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                        <div class="collapse" id="collapseLayoutsRamais" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
                                 <a class="nav-link" href="novo-ramal">Novo Ramal</a>
                                 <a class="nav-link" href="lista-ramal?method=listar&page=1">Ramais em Uso</a>
                                 <a class="nav-link" href="importa-ramal">Importar / Exportar</a>
                             </nav>
                         </div>
-                        <!-- MenuFilas -->
+                        <!-- Menu Filas -->
+                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayoutsFilas" aria-expanded="false" aria-controls="collapseLayouts">
+                            <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                            Filas
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+                        <div class="collapse" id="collapseLayoutsFilas" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" href="nova-fila">Nova Fila</a>
+                                <a class="nav-link" href="">Filas em Uso</a>
+                            </nav>
+                        </div>
+                        <!-- Menu Exemplo -->
                         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
                             <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
-                            Filas
+                            Exemplo
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
                         <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-parent="#sidenavAccordion">

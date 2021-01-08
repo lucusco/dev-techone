@@ -2,6 +2,7 @@
 
 use Techone\Lib\Controller\{
     ExibirHome,
+    FilaControl,
     RamalControl
 };
 
@@ -13,7 +14,7 @@ $routes = [
     'edita-ramal' => RamalControl::class,
     'exclui-ramal' => RamalControl::class,
     'importa-ramal' => RamalControl::class,
-    'nova-fila' => '',
+    'nova-fila' => FilaControl::class,
     'lista-fila' => '',
     'salvar-fila' => '',
     'sair' => ''
