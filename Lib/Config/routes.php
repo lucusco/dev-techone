@@ -7,7 +7,7 @@ use Techone\Lib\Controller\{
 };
 
 $routes = [
-    'home'       => ExibirHome::class,
+    'inicio' => ExibirHome::class,
     'novo-ramal' => RamalControl::class,
     'lista-ramal' => RamalControl::class,
     'salvar-ramal' => RamalControl::class,
@@ -16,7 +16,7 @@ $routes = [
     'importa-ramal' => RamalControl::class,
     'nova-fila' => FilaControl::class,
     'lista-fila' => '',
-    'salvar-fila' => '',
+    'salvar-fila' => FilaControl::class,
     'sair' => ''
 ];
 

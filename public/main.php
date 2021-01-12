@@ -1,4 +1,4 @@
 <?php
 
-$_GET['url'] = 'home';
+$_GET['url'] = 'inicio';
 require_once 'index.php';
