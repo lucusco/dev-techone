@@ -3,6 +3,7 @@
 /**
  *  Front controller
  */
+
 session_start();
 // Autoload
 require_once '../vendor/autoload.php';
@@ -22,7 +23,7 @@ $classeControladora = $rotas[$_GET['url']];
 $controle = new $classeControladora;
 
 // TODO Tratar o método method = ?
-$method = $_GET['method'] ?? NULL;
+$method = $_GET['method'] ?? null;
 
 if ($method) {
     if (method_exists($controle, $method)) {
