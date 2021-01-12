@@ -6,15 +6,6 @@ use Techone\Lib\Model\Ramal;
 
 class Asterisk
 {
-    private static $generalOptions = "
-[general]
-bindport=5060
-context=dummy
-disallow=all
-allow=ulaw
-allow=alaw
-alwaysauthreject=yes
-allowguest=no\n";
 
     /**
      * Escreve arquivo de configuração sip.conf
@@ -23,6 +14,16 @@ allowguest=no\n";
     public static function escreveConfRamais(): bool
     {
         $ramais = Ramal::todosRamais();
+
+        $generalOptions = "
+[general]
+bindport=5060
+context=dummy
+disallow=all
+allow=ulaw
+allow=alaw
+alwaysauthreject=yes
+allowguest=no\n";
        
         if (!empty($ramais)) {
             $filename = BASE_DIR . 'Files/sip.conf';
@@ -34,7 +35,7 @@ allowguest=no\n";
             if (!$file = fopen($filename, 'w'))
                 return false;
 
-            $infoGeral = ";Arquivo gerado automaticamente em " . date('d-m-Y H:i:s') . "\n" . self::$generalOptions;
+            $infoGeral = ";Arquivo gerado automaticamente em " . date('d-m-Y H:i:s') . "\n$generalOptions";
             if (fwrite($file, $infoGeral) === FALSE)
                 return false;
 
