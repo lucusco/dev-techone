@@ -25,7 +25,7 @@ class FilaControl implements InterfaceController
 
     public function persistir()
     {
-
+        var_dump($_POST);
     }
 
     public function listar()
