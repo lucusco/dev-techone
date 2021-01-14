@@ -14,7 +14,13 @@ class FilaView
 
         switch ($view) {
             case 'nova-fila':
+                if (is_array($params) && count($params) > 0) {
+                    self::$smarty->assign('comboRamais', $params);
+                }
                 $template = 'novaFila.tpl';
+                break;
+            case 'listar':
+                $template = 'listaFila.tpl';
                 break;
         }
 

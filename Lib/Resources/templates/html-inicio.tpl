@@ -81,7 +81,7 @@
                         <div class="collapse" id="collapseLayoutsFilas" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
                                 <a class="nav-link" href="nova-fila">Nova Fila</a>
-                                <a class="nav-link" href="">Filas em Uso</a>
+                                <a class="nav-link" href="lista-fila?method=listar&page=1">Filas em Uso</a>
                             </nav>
                         </div>
                         <!-- Menu Exemplo -->

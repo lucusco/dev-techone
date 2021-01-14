@@ -15,7 +15,7 @@ $routes = [
     'exclui-ramal' => RamalControl::class,
     'importa-ramal' => RamalControl::class,
     'nova-fila' => FilaControl::class,
-    'lista-fila' => '',
+    'lista-fila' => FilaControl::class,
     'salvar-fila' => FilaControl::class,
     'sair' => ''
 ];

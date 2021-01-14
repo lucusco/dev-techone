@@ -33,11 +33,11 @@
                                         <div class="form-group">
                                             <label for="ramais">Ramais da fila</label>
                                             <select multiple class="form-control" name="ramais[]" id="ramais" size="10">
-                                                <option value="1">1</option>
-                                                <option value="2">2</option>
-                                                <option value="3">3</option>
-                                                <option value="4">4</option>
-                                                <option value="5">5</option>
+                                            {if isset($comboRamais)}
+                                                {foreach $comboRamais as $ramal} 
+                                                    <option value="{$ramal->id}">{$ramal->descricao}</option>
+                                                {/foreach}
+                                            {/if}
                                             </select>
                                         </div>
                                         <div>
