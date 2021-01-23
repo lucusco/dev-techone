@@ -4,6 +4,7 @@ namespace Techone\Lib\Model;
 
 use PDO;
 use DomainException;
+use PDOException;
 use Techone\Lib\Api\DataRecord;
 use Techone\Lib\Database\Connection;
 use Techone\Lib\Helper\ModelFunctionsTrait;
@@ -95,5 +96,39 @@ class Fila extends DataRecord
         $result = $stmt->fetch(PDO::FETCH_OBJ);
         $ret = $result ? true : false;
         return $ret;
+    }
+
+    public function saveExtensions(): bool
+    {
+        try {
+            $conn = Connection::getConnection();
+            $query = "INSERT INTO extensions_queues (id_exten, id_queue) VALUES (?, ?)";
+            foreach ($this->extensions as $extension) {
+                $stmt = $conn->prepare($query);
+                $stmt->bindValue(1, $extension);
+                $stmt->bindValue(2, $this->id);
+                $stmt->execute();
+            }
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public function save()
+    {
+        $data = $this->toArray();
+
+        try {
+            $successSaveQueue = $this->store($data); 
+            if ($successSaveQueue) {
+                $successSaveExten = $this->saveExtensions();
+                if ($successSaveExten) {
+                    return true;
+                }
+            }
+        } catch (PDOException $e) {
+            return $e->getMessage();
+        }
     }
 }
