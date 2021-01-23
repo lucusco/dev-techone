@@ -13,6 +13,9 @@ use Techone\Lib\Database\Connection;
  */
 abstract class DataRecord
 {
+
+    abstract function setId($id);
+
     /**
      *  Obtém o nome da entidade sendo manipulada
      */
@@ -25,19 +28,21 @@ abstract class DataRecord
     /**
      *  Persiste o objeto no banco de dados
      *  @param $object  Array com os dados do objeto
-     *  @return boll  PDO::exec retorna um inteiro com a quantidade de linhas afetadas 
+     *  @return object|null Retorna o objeto com prop id setada ou null em caso de falha
      *  @throws DomainException Para casos em que não foi possível obter a conexão
      */
-    protected function store(array $object)
+    protected function store(array $object): ?object
     {
         $object = self::prepare($object);
 
         if (!isset($object['id'])) { // INSERT
+            
             $object['id'] = $this->getProximoId();
-            $sql = "INSERT INTO {$this->getEntity()}" .
-                '(' . implode(', ', array_keys($object)) . ')' .
-                ' VALUES ' .
-                '(' . implode(', ', array_values($object)) . ')';
+            
+            $columns = implode(', ', array_keys($object));
+            $values = implode(', ', array_values($object));
+
+            $sql = "INSERT INTO {$this->getEntity()} ({$columns}) VALUES ({$values})";
 
         } else { //UPDATE
             $sql = "UPDATE {$this->getEntity()} ";
@@ -47,13 +52,16 @@ abstract class DataRecord
             $sql .= 'SET ' . implode(', ', $sets);
             $sql .= "WHERE id = {$object['id']}";
         }
-
-        if ($conn = Connection::getConnection()) {
-            $result = $conn->exec($sql);
-            return $result;
+        
+        $conn = Connection::getConnection();
+        $result = $conn->exec($sql);
+        if ($result) {
+            $this->setId($object['id']);
+            return $this;
         } else {
-            throw new DomainException('Não foi possível obter a conexão');
+            return null;
         }
+        
     }
 
     /**
