@@ -13,3 +13,7 @@ templates_c/
 
 Files/
 
+# Sonarqube dir
+.scannerwork/
+sonar-project.properties
+
