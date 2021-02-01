@@ -71,7 +71,10 @@ class FilaControl implements InterfaceController
 
     public function listar()
     {
-        FilaView::renderizar('listar');
+        $fila = new Fila;
+        $filas = $fila->loadAll();
+        $params = $filas ?? null;
+        FilaView::renderizar('listar', $params);
     }
 
     public function remover()

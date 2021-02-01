@@ -10,9 +10,38 @@
                     </ol>
                     <div class="row">
                         <div class="col-xl-12 col-md-10">
-                            <p>Listagem das filas</p>
+                            <h4 class="mb-4">Filas em uso</h4>
+                            {if isset($filas)}
+                                <table id="table_filas" class="display">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th></th>
+                                            <th>ID</th>
+                                            <th>Descrição</th>
+                                            <th>Entrada</th>
+                                            <th>Estratégia</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {foreach $filas as $fila}
+                                            <tr>
+                                                <td width="35"><i class="fas fa-minus-circle  btn-outline-danger"></i></td>
+                                                <td width="35"><i class="fas fa-edit btn-outline-primary"></i></td>
+                                                <td>{$fila->id}</td>
+                                                <td>{$fila->description|ucfirst}</td>
+                                                <td>{$fila->number}</td>
+                                                <td>{$fila->strategy|ucfirst}</td>
+                                            </tr>
+                                        {/foreach}
+                                    </tbody>
+                                </table>
+                            {/if}
                         </div>
                     </div>     
                 </div>
             </main>
+            <script>
+                {include file="../js/filas.js"}
+            </script>
 {include file="html-fim.tpl"}

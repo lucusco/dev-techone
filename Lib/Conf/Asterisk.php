@@ -45,6 +45,7 @@ allowguest=no\n";
             }
             fclose($file);
 
+            self::syncSipConf($filename);
             return true;
         }
     }
@@ -72,5 +73,21 @@ canreinvite=yes
 context={$ramal->context}\n";
         
         return $linha;
+    }
+
+    /**
+     * Move o arquivo sip.conf para o local correto e atualiza o dialplan
+     *
+     * @param string $filename
+     */
+    public static function syncSipConf($filename)
+    {
+        clearstatcache();
+        $sipFile = '/etc/asterisk/sip.conf';
+        if (file_exists($sipFile) && file_exists($filename)) {
+            rename('/etc/asterisk/sip.conf', '/etc/asterisk/sip.conf.bak');
+            copy($filename, $sipFile);
+            exec("asterisk -rx 'sip reload'");
+        }
     }
 }

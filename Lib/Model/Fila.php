@@ -131,4 +131,13 @@ class Fila extends DataRecord
             return $e->getMessage();
         }
     }
+
+    public function loadAll(): ?array
+    {
+        $filas = $this->load();
+        if (empty($filas)) {
+            return null;
+        }
+        return $filas;
+    }
 }

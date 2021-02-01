@@ -18,12 +18,14 @@
     <link rel="stylesheet" type="text/css" href="{$css_dir}awesomefonts-solid.min.css"> *}
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.js"></script>
     <title>techoOne</title>
 </head>
 <body class="sb-nav-fixed">
     <!-- Nav Topo -->
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-        <a class="navbar-brand" href="home"><i class="fas fa-asterisk fa-lg orange"></i> tehcOne </a>
+        <a class="navbar-brand" href="inicio"><i class="fas fa-asterisk fa-lg orange"></i> tehcOne </a>
         <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button>
         <!-- Navbar Search-->
         <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">

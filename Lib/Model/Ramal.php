@@ -210,7 +210,7 @@ class Ramal extends DataRecord
         try {
             $result = $this->store($this->toArray());
             if ($result) {
-                Asterisk::escreveConfRamais();
+                $result =  Asterisk::escreveConfRamais();
             }
             return $result;
         } catch (PDOException $e) {
@@ -232,6 +232,9 @@ class Ramal extends DataRecord
             $conn = Connection::getConnection();
             $sql = "DELETE FROM extensions WHERE id = {$id}";
             $result = $conn->exec($sql);
+            if ($result) {
+                Asterisk::escreveConfRamais();
+            }
             return $result;
         } catch (PDOException $e) {
             RamalControl::renderizaErro($e->getMessage());

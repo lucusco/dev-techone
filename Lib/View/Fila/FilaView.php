@@ -21,6 +21,9 @@ class FilaView
                 break;
             case 'listar':
                 $template = 'listaFila.tpl';
+                if (is_array($params)) {
+                    self::$smarty->assign('filas', $params);
+                }
                 self::verificaMsgErro();
                 break;
         }
