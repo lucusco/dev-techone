@@ -3,10 +3,8 @@
 namespace Techone\Lib\Controller;
 
 use DomainException;
-use stdClass;
 use Techone\Lib\Helper\ControllerAuxTrait;
 use Techone\Lib\Model\Fila;
-use Techone\Lib\Model\Ramal;
 use Techone\Lib\View\Fila\FilaView;
 
 class FilaControl implements InterfaceController
@@ -29,26 +27,32 @@ class FilaControl implements InterfaceController
      */
     public function novaFila()
     {
-        $ramaisDisponiveis = Ramal::todosRamais();
-        $comboRamais = array();
-        foreach ($ramaisDisponiveis['ramais'] as $r) {
-            $ramal = new stdClass;
-            $ramal->id = $r->id;
-            $ramal->descricao = "{$r->exten} - {$r->username}";
-            $comboRamais[] = $ramal;
-        }
+        $comboRamais = Fila::getComboExtens();
         FilaView::renderizar('nova-fila', $comboRamais);
     }
 
     public function editar()
     {
+        $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+        if (!is_numeric($id)) return;
+        
+        $fila = new Fila;
+        $dados['fila'] = $fila->loadQueue($id);
+        $dados['combo'] = Fila::getComboExtens();
 
+        FilaView::renderizar('editar', $dados);
     }
 
     public function persistir()
     {
         $dados = (object)$_POST;
         $fila = new Fila;
+        $acao = 'inserida';
+
+        if (is_numeric($dados->id)) {
+            $acao = 'atualizada';
+            $fila->setId(intval($dados->id));
+        }
 
         try {
             $fila->setNumber(intval($dados->entrada));
@@ -57,7 +61,7 @@ class FilaControl implements InterfaceController
             $fila->setExtensions($dados->ramais);
             $sucesso = $fila->save();
             if ($sucesso) {
-                $this->setaMensagemRetorno('success', "Fila inserida com sucesso!"); 
+                $this->setaMensagemRetorno('success', "Fila $acao com sucesso!"); 
             } else {
                 $this->setaMensagemRetorno('error', "Houve erro ao salvar a fila!"); 
             }

@@ -26,8 +26,8 @@
                                     <tbody>
                                         {foreach $filas as $fila}
                                             <tr>
-                                                <td width="35"><i class="fas fa-minus-circle  btn-outline-danger"></i></td>
-                                                <td width="35"><i class="fas fa-edit btn-outline-primary"></i></td>
+                                                <td width="35"><a href=""><i class="fas fa-minus-circle  btn-outline-danger"></i></a></td>
+                                                <td width="35"><a href="edita-fila?method=editar&id={$fila->id}"><i class="fas fa-edit btn-outline-primary"></i></a></td>
                                                 <td>{$fila->id}</td>
                                                 <td>{$fila->description|ucfirst}</td>
                                                 <td>{$fila->number}</td>

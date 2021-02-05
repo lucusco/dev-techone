@@ -17,6 +17,7 @@ $routes = [
     'nova-fila' => FilaControl::class,
     'lista-fila' => FilaControl::class,
     'salvar-fila' => FilaControl::class,
+    'edita-fila' => FilaControl::class,
     'sair' => ''
 ];
 

@@ -18,12 +18,20 @@ class FilaView
                     self::$smarty->assign('comboRamais', $params);
                 }
                 $template = 'novaFila.tpl';
+                self::$smarty->assign('titulo', 'Nova ');
                 break;
             case 'listar':
                 $template = 'listaFila.tpl';
                 if (is_array($params)) {
                     self::$smarty->assign('filas', $params);
                 }
+                self::verificaMsgErro();
+                break;
+            case 'editar':
+                $template = 'novaFila.tpl';
+                self::$smarty->assign('titulo', 'Editar ');
+                self::$smarty->assign('fila', $params['fila']);
+                self::$smarty->assign('comboRamais', $params['combo']);
                 self::verificaMsgErro();
                 break;
         }
