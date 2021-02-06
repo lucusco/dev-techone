@@ -49,12 +49,14 @@ class FilaControl implements InterfaceController
         $fila = new Fila;
         $acao = 'inserida';
 
-        if (is_numeric($dados->id)) {
+        if (isset($dados->id) && is_numeric($dados->id)) {
             $acao = 'atualizada';
             $fila->setId(intval($dados->id));
         }
-
         try {
+            if (!isset($dados->ramais))
+                throw new DomainException('Selecione no mínimo 1 ramal para a fila');
+            
             $fila->setNumber(intval($dados->entrada));
             $fila->setDescription($dados->descricao);
             $fila->setStrategy($dados->estrategia);
@@ -68,8 +70,8 @@ class FilaControl implements InterfaceController
             header("Location: lista-fila?method=listar&page=1");
 
         } catch (DomainException $e) {
-            var_dump($e->getMessage());
-            //Renderizar o erro na tela
+            $this->setaMensagemRetorno('error', "{$e->getMessage()}");
+            header('Location: nova-fila');
         }      
     }
 
@@ -78,12 +80,25 @@ class FilaControl implements InterfaceController
         $fila = new Fila;
         $filas = $fila->loadAll();
         $params = $filas ?? null;
+        if (empty($filas))
+            $this->setaMensagemRetorno('info', 'Não há filas criadas até o momento');
         FilaView::renderizar('listar', $params);
     }
 
     public function remover()
     {
+        if (!isset($_GET['id']) && !is_numeric($_GET['id'])) {
+            echo 'ERRO';
+        }
 
+        $removeu = Fila::removerFila(intval($_GET['id']));
+        if ($removeu === true) {
+            $this->setaMensagemRetorno('success', "Fila removida com sucesso");
+        } else {
+            $this->setaMensagemRetorno('error', "Erro ao remover a fila!");
+        }
+
+        header('Location: lista-fila?method=listar');
     }
 
 }

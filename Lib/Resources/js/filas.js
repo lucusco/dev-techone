@@ -1,3 +1,10 @@
+/* Modal excluir */
+$('.btn-outline-danger').click(function(){
+    var id=$(this).data('id');
+    $('#btnModalExcluir').attr('href','exclui-fila?method=remover&id='+id);
+});
+
+/* Data table */
 $(document).ready( function () {
     $('#table_filas').DataTable({
         "columnDefs": [

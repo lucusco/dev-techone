@@ -293,6 +293,8 @@ class Ramal extends DataRecord
                 }
                 fclose($file);
             }
+        } else {
+            return "Erro ao manipular planilha de ramais!";
         }
         // Transformar array de objetos Ramal
         if (count($dadosRamais) > 0) {
@@ -384,8 +386,13 @@ class Ramal extends DataRecord
             /** @var PDO conn */
             $conn = Connection::getConnection();
             $result = $conn->exec($query);
-            if ($result > 0) return true;
-            else return false;
+            if ($result > 0) {
+                Asterisk::escreveConfRamais();
+                return true;
+            }
+            else {
+                return false;
+            }
         } 
         catch (PDOException $e) {
             RamalControl::renderizaErro($e->getMessage());

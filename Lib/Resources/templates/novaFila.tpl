@@ -1,5 +1,6 @@
 {include file="html-inicio.tpl"}
 {* Estrutura padrão para conteúdos 3-tabs *}
+            {include file="mensagemRetorno.tpl"}
             <main>
                 <div class="container-fluid">
                     <h1 class="mt-4">Filas</h1>

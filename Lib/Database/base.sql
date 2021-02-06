@@ -19,7 +19,7 @@ create table queues (
     id integer not null primary key,
     description varchar(50) not null,
     number integer not null,
-    strategy queue_strategy,
+    strategy queue_strategy
 );
 
 /* Extensions x Queue */

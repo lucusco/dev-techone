@@ -224,4 +224,24 @@ class Fila extends DataRecord
         }
         return $comboRamais;
     }
+
+    /**
+     * Remove uma fila do BD
+     *
+     * @param int $id ID do ramal a ser removido
+     */
+    public static function removerFila(int $id)
+    {
+        try {
+            /** @var \PDO conn */
+            $conn = Connection::getConnection();
+            $sql = "DELETE FROM extensions_queues WHERE id_queue = {$id};";
+            $sql .= "DELETE FROM queues WHERE id = {$id}";
+            $result = $conn->exec($sql);
+            $ret = ($result > 0) ? true : false;
+            return $ret;
+        } catch (PDOException $e) {
+            echo $e->getMessage(); die;
+        }
+    }
 }
