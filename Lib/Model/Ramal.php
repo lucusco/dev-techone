@@ -128,15 +128,13 @@ class Ramal extends DataRecord
     {
         if (empty($recording) && !isset($_POST['gravacao'])) {
             throw new Exception('Gravação deve ser informada');
-        } else {
-            $recording = !empty($recording) ? $recording : $_POST['gravacao'];
-        }
+        }  
+        $recording = !empty($recording) ? $recording : $_POST['gravacao'];
         
         if (!in_array($recording, array('sim', 'nao', 's', 'n', 'não', 'on', 'off'))) {
             throw new Exception('Gravação não especificada. Tipos permitidos são: sim, nao, s, n, não');
-        } else {
-            strtolower($recording) == 'sim' || strtolower($recording) == 's' || $_POST['gravacao'] == 'on' ? $this->recording = 'true' : $this->recording = 'false'; 
-        }
+        } 
+        $this->recording = (in_array($recording, array('sim', 's')) || (isset($_POST['gravacao']) && $_POST['gravacao'] == 'on')) ?  'true' : 'false'; 
     }
 
     /**
@@ -161,15 +159,15 @@ class Ramal extends DataRecord
      *
      * @param int $pagina Se enviada, a consulta será paginada
      */
-    public static function todosRamais(int $pagina=NULL)
+    public static function todosRamais(int $pagina=NULL, $order = '')
     {
+        $order = empty($order) ? 'id' : $order;
         try {
-
             /** @var \PDO conn */
             $conn = Connection::getConnection();
 
             if ($pagina) { //consulta com paginacao
-                $busca = "SELECT * FROM extensions ORDER BY id";
+                $busca = "SELECT * FROM extensions ORDER BY $order";
                 $regPorPagina = 10;
                 
                 $inicio = $pagina - 1;
@@ -190,7 +188,7 @@ class Ramal extends DataRecord
                     'ramais' => $result
                 ];
             } else { //consulta sem paginação
-                $stmt = $conn->query("SELECT * FROM extensions ORDER BY id");
+                $stmt = $conn->query("SELECT * FROM extensions ORDER BY $order");
                 $retorno['ramais'] = $stmt->fetchAll(PDO::FETCH_OBJ);
             }
 
@@ -295,6 +293,8 @@ class Ramal extends DataRecord
                 }
                 fclose($file);
             }
+        } else {
+            return "Erro ao manipular planilha de ramais!";
         }
         // Transformar array de objetos Ramal
         if (count($dadosRamais) > 0) {
@@ -386,8 +386,13 @@ class Ramal extends DataRecord
             /** @var PDO conn */
             $conn = Connection::getConnection();
             $result = $conn->exec($query);
-            if ($result > 0) return true;
-            else return false;
+            if ($result > 0) {
+                Asterisk::escreveConfRamais();
+                return true;
+            }
+            else {
+                return false;
+            }
         } 
         catch (PDOException $e) {
             RamalControl::renderizaErro($e->getMessage());

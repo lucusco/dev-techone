@@ -1,5 +1,16 @@
+/* Modal excluir */
+$('.btn-outline-danger').click(function(){
+    var id=$(this).data('id');
+    $('#btnModalExcluir').attr('href','exclui-fila?method=remover&id='+id);
+});
+
+/* Data table */
 $(document).ready( function () {
     $('#table_filas').DataTable({
+        "columnDefs": [
+            { "orderable": false, "targets": 0 },
+            { "orderable": false, "targets": 1 }
+          ],
         "language" : {
             "emptyTable": "Nenhum registro encontrado",
             "info": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
