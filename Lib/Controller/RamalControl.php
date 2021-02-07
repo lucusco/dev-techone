@@ -4,7 +4,6 @@ namespace Techone\Lib\Controller;
 
 use Exception;
 use Techone\Lib\Model\Ramal;
-use Techone\Lib\Conf\Asterisk;
 use Techone\Lib\View\Ramal\RamalView;
 use Techone\Lib\Helper\ControllerAuxTrait;
 use Techone\Lib\Controller\InterfaceController;
@@ -28,17 +27,14 @@ class RamalControl implements InterfaceController
 
     public function listar()
     {
-        $pagina = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT);
-        if (!is_int($pagina)) $pagina = 1;
-
         $dados = array();
-        $result = Ramal::todosRamais($pagina);
+        $result = Ramal::todosRamais();
 
         if (count($result['ramais']) > 0) {
             $dados = [
-                'ramais' =>  $result['ramais'],
-                'quantidadePaginas' => $result['totalPaginas']
+                'ramais' =>  $result['ramais']
             ];
+            
         } else {
             $this->setaMensagemRetorno('info', "Nenhum ramal criado até o momento");  
         }

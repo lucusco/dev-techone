@@ -42,8 +42,11 @@ class Fila extends DataRecord
 
     public function setNumber($number)
     {
-        if (!is_int($number))
+        if (!is_int($number) || empty($number))
             throw new DomainException('Entrada deve ser um número inteiro!');
+        if ($this->jaExiste('number', $number, $this->id) === true)
+            throw new DomainException('Entrada informada já existe!');
+
         $this->number = $number;
     }
 
@@ -81,12 +84,16 @@ class Fila extends DataRecord
      *
      * @param array $extension Array de ramais 
      */
-    public function setExtensions($extension)
+    public function setExtensions($data)
     {
-        if (!is_array($extension) || (count($extension) < 1))
+        $extension = $data;
+        if (!isset($extension->ramais))
+            throw new DomainException('Selecione no mínimo 1 ramal para a fila');
+
+        if ((count($extension->ramais) < 1))
             throw new DomainException('Não foram informados ramais para a fila!');
         
-        foreach ($extension as $exten) {
+        foreach ($extension->ramais as $exten) {
             if (!$this->extensionExists(intval($exten))) {
                 //TODO informar que algum ramal não será salvo por não existir
                 continue;

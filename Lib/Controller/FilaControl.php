@@ -54,13 +54,10 @@ class FilaControl implements InterfaceController
             $fila->setId(intval($dados->id));
         }
         try {
-            if (!isset($dados->ramais))
-                throw new DomainException('Selecione no mínimo 1 ramal para a fila');
-            
             $fila->setNumber(intval($dados->entrada));
             $fila->setDescription($dados->descricao);
             $fila->setStrategy($dados->estrategia);
-            $fila->setExtensions($dados->ramais);
+            $fila->setExtensions($dados);
             $sucesso = $fila->save();
             if ($sucesso) {
                 $this->setaMensagemRetorno('success', "Fila $acao com sucesso!"); 

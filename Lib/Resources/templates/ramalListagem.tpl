@@ -30,12 +30,12 @@
                             </div>
                             <h4 class="p-3">Ramais em uso</h4>
                             {include file="mensagemRetorno.tpl"}
-                                <div class="table px-3">
-                                    <table class="table table-striped">
+                                <div class="px-3">
+                                    <table id="table_ramais" class="display">
                                         <thead>
-                                            <tr class="table-secondary">
-                                                <td style="width: 1rem"></td>
-                                                <td style="width: 1rem"></td>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
                                                 <td>ID</td>
                                                 <td>Ramal</td>
                                                 <td>Usuário</td>
@@ -47,15 +47,15 @@
                                         {if isset($ramais)}
                                             {foreach $ramais as $ramal}
                                             <tr>
-                                                <td><a href="#modalExclusao" 
-                                                    class="btn btn-sm btn-outline-danger" 
+                                                <td width="35"><a href="#modalExclusao" 
+                                                    class="btn-outline-danger" 
                                                     data-toggle="modal"
                                                     data-id="{$ramal->id}" 
                                                     role="button">
-                                                    <img src="{$img_dir}remove.svg" width="15" >
+                                                    <i class="fas fa-minus-circle"></i>
                                                     </a>
                                                 </td>
-                                                <td><a href="edita-ramal?method=editar&id={$ramal->id}" class="btn btn-sm btn-outline-primary"><img src="{$img_dir}edit.svg" width="15"></a></td>
+                                                <td width="35"><a href="edita-ramal?method=editar&id={$ramal->id}" class="btn btn-sm"><i class="fas fa-edit btn-outline-primary"></i></a></td>
                                                 <td class="align-middle">{$ramal->id}</td>
                                                 <td class="align-middle">{$ramal->exten}</td>
                                                 <td class="align-middle">{$ramal->username}</td>
@@ -67,17 +67,6 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                {if isset($paginas)}
-                                <div class="p-3">
-                                    <nav aria-label="Navegacao">
-                                        <ul class="pagination">
-                                        {for $i = 1 to $paginas}
-                                            <li class="page-item"><a class="page-link" href="lista-ramal?method=listar&page={$i}">{$i}</a></li> 
-                                        {/for}
-                                        </ul>
-                                    </nav>
-                                </div>
-                                {/if}
                             <script>
                                 {include file="../js/ramal.js"}
                             </script>

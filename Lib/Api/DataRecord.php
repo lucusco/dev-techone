@@ -138,9 +138,11 @@ abstract class DataRecord
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         // Validações com base no id retornado
-        if (!$result) return false;
-        else if (count($result) > 1) return true;
-        else if ($result[0]['id'] != $id) return true;
-        else return false;
+        if (!$result) $ret = false;
+        else if (count($result) > 1) $ret = true;
+        else if ($result[0]['id'] != $id) $ret = true;
+        else $ret = false;
+
+        return $ret;
     }
 }

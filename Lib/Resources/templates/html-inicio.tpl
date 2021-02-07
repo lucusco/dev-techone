@@ -70,7 +70,7 @@
                         <div class="collapse" id="collapseLayoutsRamais" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
                                 <a class="nav-link" href="novo-ramal">Novo Ramal</a>
-                                <a class="nav-link" href="lista-ramal?method=listar&page=1">Ramais em Uso</a>
+                                <a class="nav-link" href="lista-ramal?method=listar">Ramais em Uso</a>
                                 <a class="nav-link" href="importa-ramal">Importar / Exportar</a>
                             </nav>
                         </div>
@@ -83,7 +83,7 @@
                         <div class="collapse" id="collapseLayoutsFilas" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
                                 <a class="nav-link" href="nova-fila">Nova Fila</a>
-                                <a class="nav-link" href="lista-fila?method=listar&page=1">Filas em Uso</a>
+                                <a class="nav-link" href="lista-fila?method=listar">Filas em Uso</a>
                             </nav>
                         </div>
                         <!-- Menu Exemplo -->
