@@ -28,35 +28,37 @@ abstract class DataRecord
     /**
      *  Persiste o objeto no banco de dados
      *  @param $object  Array com os dados do objeto
-     *  @return object|null Retorna o objeto com prop id setada ou null em caso de falha
-     *  @throws DomainException Para casos em que não foi possível obter a conexão
+     *  @return object|null Retorna o objeto com o id setado ou null em caso de falha
      */
     protected function store(array $object): ?object
     {
         $object = self::prepare($object);
 
-        if (!isset($object['id'])) { // INSERT
-            
-            $object['id'] = $this->getProximoId();
-            
+        if (!isset($object['id'])) { // INSERT    
+            $object['id'] = $id = $this->getProximoId();
             $columns = implode(', ', array_keys($object));
-            $values = implode(', ', array_values($object));
 
-            $sql = "INSERT INTO {$this->getEntity()} ({$columns}) VALUES ({$values})";
+            $query = "INSERT INTO {$this->getEntity()} ({$columns}) VALUES (" . rtrim(str_repeat('?,', count($object)), ','). ")"; 
 
         } else { //UPDATE
-            $sql = "UPDATE {$this->getEntity()} ";
+            $id = array_shift($object);
+
             foreach ($object as $column => $value) {
-                $sets[] = "$column = $value";
+                $sets[] = "$column = ?";
             }
-            $sql .= 'SET ' . implode(', ', $sets);
-            $sql .= "WHERE id = {$object['id']}";
+            $query = "UPDATE {$this->getEntity()} SET " . implode(', ', $sets) . " WHERE id ={$id}";
         }
         
         $conn = Connection::getConnection();
-        $result = $conn->exec($sql);
+        $stmt = $conn->prepare($query);
+        foreach (array_values($object) as $key => $value) {
+            $tipo = is_numeric($value) ? PDO::PARAM_INT : PDO::PARAM_STR;
+            $stmt->bindValue(($key+1), $value, $tipo);
+        }
+        $result = $stmt->execute();
+
         if ($result) {
-            $this->setId($object['id']);
+            $this->setId($id);
             return $this;
         } else {
             return null;
@@ -109,7 +111,7 @@ abstract class DataRecord
             if (is_scalar($value)) { // Scalar variables are those containing an integer, float, string or boolean. 
                 if (is_string($value) && !empty($value)) {
                     $value = addslashes($value);
-                    $prepared[$key] = "'$value'";
+                    $prepared[$key] = "$value";
                 } else if (is_bool($value)) {
                     $prepared[$key] = $value ? "'true'" : "'false'";
                 } else if ($value !== '') {

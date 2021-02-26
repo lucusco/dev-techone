@@ -14,7 +14,6 @@ class RamalControl implements InterfaceController
 
     public function processarRequisicao()
     {
-        //Tratar urls que não chamam método
         switch ($_GET['url']) {
             case 'novo-ramal':             
             case 'importa-ramal':
@@ -134,7 +133,7 @@ class RamalControl implements InterfaceController
             header('Pragma: no-cache');
             ob_clean();
             readfile($file);
-            // TODO Ver uma outra de enviar mensagem nesse caso, se eu fizer outro header o arquivo não baixa
+            // TODO Ver uma outra de enviar mensagem de sucesso nesse caso, se eu fizer outro header o arquivo não baixa
         } else {
             $this->setaMensagemRetorno('info', 'A planilha não foi exportada porque não há ramais criados');
             header('Location: importa-ramal');
