@@ -42,13 +42,13 @@ abstract class DataRecord
 
         } else { //UPDATE
             $id = array_shift($object);
-
             foreach ($object as $column => $value) {
                 $sets[] = "$column = ?";
             }
+
             $query = "UPDATE {$this->getEntity()} SET " . implode(', ', $sets) . " WHERE id ={$id}";
         }
-        
+
         $conn = Connection::getConnection();
         $stmt = $conn->prepare($query);
         foreach (array_values($object) as $key => $value) {
@@ -74,7 +74,7 @@ abstract class DataRecord
      * @param string $coluna Coluna a ser pesquisada
      * @param string $order Ordenação
      */
-    public function load(int $id = null, string $coluna = '*', string $order = 'id')
+    protected function load(int $id = null, string $coluna = '*', string $order = 'id')
     {
         $sql = isset($id) ? "SELECT $coluna FROM {$this->getEntity()} WHERE id = $id" : "SELECT $coluna FROM {$this->getEntity()} ORDER BY $order";
         
@@ -132,7 +132,7 @@ abstract class DataRecord
      * @param int $id ID do objeto
      * @return true|false 
      */
-    public function jaExiste($coluna, $valor, $id)
+    protected function jaExiste($coluna, $valor, $id)
     {        
         $sql = "SELECT id FROM {$this->getEntity()} WHERE $coluna = $valor";
         $conn = Connection::getConnection();
