@@ -1,6 +1,7 @@
 <?php
 
 use Techone\Lib\Controller\{
+    ConfigGeralControl,
     ExibirHome,
     FilaControl,
     RamalControl
@@ -19,6 +20,8 @@ $routes = [
     'salvar-fila' => FilaControl::class,
     'edita-fila' => FilaControl::class,
     'exclui-fila' => FilaControl::class,
+    'config' => ConfigGeralControl::class,
+    'salvar-config' => ConfigGeralControl::class,
     'sair' => ''
 ];
 

@@ -29,4 +29,11 @@ create table extensions_queues (
     id_queue integer not null references queues (id)
 );
 
+/* Configs */
+create table settings (
+    id serial primary key,
+    nome varchar(100) unique not null,
+    valor varchar(100),
+    descricao varchar(100)
+);
 

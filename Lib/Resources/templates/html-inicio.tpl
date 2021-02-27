@@ -14,9 +14,8 @@
     <script src="{$css_dir}sweetalert.min.js"></script>
     
     <!-- Font Awesome -->
-    {* <link rel="stylesheet" type="text/css" href="{$css_dir}awesomefonts-all.min.css">
-    <link rel="stylesheet" type="text/css" href="{$css_dir}awesomefonts-solid.min.css"> *}
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+     <link rel="stylesheet" type="text/css" href="{$css_dir}fontawesome/css/all.min.css">
+    {* <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous"> *}
     
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.css">
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.js"></script>
@@ -122,9 +121,9 @@
                             </nav>
                         </div>
                         <!-- Fim Menu Rel. -->
-                        <a class="nav-link" href="">
-                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                            Ferramentas
+                        <a class="nav-link" href="config">
+                            <div class="sb-nav-link-icon"><i class="fas fa-cogs"></i></div>
+                            Configurações Gerais
                         </a>
                     </div>
                 </div>
