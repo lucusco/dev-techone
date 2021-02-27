@@ -32,8 +32,8 @@ create table extensions_queues (
 /* Configs */
 create table settings (
     id serial primary key,
-    nome varchar(100) unique not null,
-    valor varchar(100),
-    descricao varchar(100)
+    name varchar(100) unique not null,
+    value varchar(100),
+    description varchar(100)
 );
 
