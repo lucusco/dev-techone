@@ -1,5 +1,6 @@
 {include file="html-inicio.tpl"}
 {* Estrutura padrão para conteúdos 3-tabs *}
+            {include file="mensagemRetorno.tpl"}
             <main>
                 <div class="container-fluid">
                     <h1 class="mt-4">Configurações Gerais</h1>
@@ -14,11 +15,11 @@
                                     <div class="row">
                                         <div class="col-md-2 col-sm-1">
                                             <label for="rangeinicio" class="form-label">Ramal inicial</label>
-                                            <input class="form-control" type="text" name="rangeinicio" id="rangeinicio" placeholder="Ramal inicial">
+                                            <input class="form-control" type="text" name="rangeinicio" id="rangeinicio" value="{if isset($config->faixaRamalInicial)}{$config->faixaRamalInicial}{/if}" placeholder="Ramal inicial">
                                         </div>
                                         <div class="col-md-2 col-sm-1">
                                             <label for="rangefim" class="form-label">Ramal final</label>
-                                            <input class="form-control" type="text" name="rangefim" id="rangefim" placeholder="Ramal Final">
+                                            <input class="form-control" type="text" name="rangefim" id="rangefim" value="{if isset($config->faixaRamalFinal)}{$config->faixaRamalFinal}{/if}" placeholder="Ramal Final">
                                         </div>
                                     </div>
                                     <button class="btn btn-success mt-3">Salvar</button>
