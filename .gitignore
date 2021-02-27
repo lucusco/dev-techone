@@ -17,3 +17,6 @@ Files/
 .scannerwork/
 sonar-project.properties
 
+#Fontawesome dir - Versão 5.15 disponível em https://fontawesome.com/download
+public/assets/css/fontawesome/
+
