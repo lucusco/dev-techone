@@ -11,6 +11,7 @@ use Techone\Lib\Api\DataRecord;
 use Techone\Lib\Database\Connection;
 use Techone\Lib\Controller\RamalControl;
 use Techone\Lib\Helper\ModelFunctionsTrait;
+use Techone\Lib\Resources\Html\HtmlForm;
 
 /**
  *  Classe para manipular os ramais
@@ -338,7 +339,7 @@ class Ramal extends DataRecord
         $filename = DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . date('H:i:s_') . 'ramais.csv';
         $file = fopen($filename, 'x+');
 
-        $cabecalho = $exemplo == true ? ['Ramal', 'Nome', 'Contexto', 'Tipo', 'Gravar', 'Senha'] :  ['ID', 'Ramal', 'Nome', 'Contexto', 'Tipo', 'Gravar', 'Senha'];
+        $cabecalho = $exemplo == true ? ['Ramal', 'Nome', 'Contexto', 'Tipo', 'Gravar', 'Senha'] :  ['ID', 'Ramal', 'Nome', 'Senha', 'Contexto', 'Tipo', 'Gravar'];
         fputcsv($file, $cabecalho, ';', '"');
 
         if ($exemplo) {
@@ -415,5 +416,29 @@ class Ramal extends DataRecord
         } catch (PDOException $e) {
             RamalControl::renderizaErro($e->getMessage());
         }
+    }
+
+    /**
+     * Monta o combo de seleção de ramais
+     *
+     * @param string $ramalEmEdicao Ramal que deve ser mantido no combo (selected)
+     */
+    public static function comboRamais($ramalEmEdicao = '')
+    {
+        $faixa = explode('-', Configuracao::buscaValorConfig('faixaRamais')->valor);
+
+        for ($i = $faixa[0]; $i <=  $faixa[1]; $i++) {
+            $faixaRamais[$i] = $i;
+        }
+
+        $conn = Connection::getConnection();
+        $stmt = $conn->query('SELECT exten FROM extensions');
+        while ($ramal = $stmt->fetch(PDO::FETCH_OBJ)) {
+            if (in_array($ramal->exten, $faixaRamais) && $ramal->exten != $ramalEmEdicao)
+                unset($faixaRamais[array_search($ramal->exten, $faixaRamais)]);
+        }
+
+        $combo = HtmlForm::montaCombo('form-control', 'ramal', $faixaRamais, 'ramal', $ramalEmEdicao);
+        return $combo;
     }
 }

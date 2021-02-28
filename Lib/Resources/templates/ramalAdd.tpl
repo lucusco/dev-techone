@@ -17,7 +17,8 @@
                                         <legend>{$titulo}</legend>
                                         <div class="form-group">
                                             <label for="ramal">Ramal</label>
-                                            <input class="form-control" type="text" name="ramal" id="ramal" value="{if isset($ramal)}{$ramal->exten}{/if}">
+                                            {if isset($comboRamais)}{$comboRamais}{/if}
+                                            {* <input class="form-control" type="text" name="ramal" id="ramal" value="{if isset($ramal)}{$ramal->exten}{/if}"> *}
                                         </div>
                                         <div class="form-group">
                                             <label for="nome">Descrição</label>

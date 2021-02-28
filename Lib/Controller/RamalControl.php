@@ -15,13 +15,21 @@ class RamalControl implements InterfaceController
     public function processarRequisicao()
     {
         switch ($_GET['url']) {
-            case 'novo-ramal':             
+            case 'novo-ramal': 
+                $this->novo();
+                break;
             case 'importa-ramal':
                 RamalView::renderizar($_GET['url']);
                 break;
                 
             //TODO Criar um default se nao achar pra onde direcionar
         }
+    }
+
+    public function novo()
+    {
+        $comboRamais = Ramal::comboRamais();
+        RamalView::renderizar('novo-ramal', $comboRamais);
     }
 
     public function listar()
@@ -49,6 +57,7 @@ class RamalControl implements InterfaceController
         //Objeto com os dados do ramal preenchidos
         $ramal = new Ramal;
         $dados['ramal'] = $ramal->carregarRamal($id); //TODO - tratar possíveis erros
+        $dados['comboRamais'] = Ramal::comboRamais($dados['ramal']->exten);
         
         RamalView::renderizar('editar', $dados);
     }
