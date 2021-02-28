@@ -3,6 +3,8 @@
 namespace Techone\Lib\Model;
 
 use PDOException;
+use Techone\Lib\Conf\Asterisk;
+use Techone\Lib\Controller\ConfigGeralControl;
 use Techone\Lib\Database\Connection;
 
 class Configuracao
@@ -116,7 +118,7 @@ class Configuracao
      */
     private function salvarFaixaRamais(): ?bool
     {
-        $valorAtual = $this->buscaValorConfig('faixaRamais');   
+        $valorAtual = self::buscaValorConfig('faixaRamais');   
         $novoValor = "{$this->configuracoes['faixaRamais']['inicio']}-{$this->configuracoes['faixaRamais']['fim']}";
 
         if ($novoValor === $valorAtual->valor) return null;
@@ -125,6 +127,9 @@ class Configuracao
         $this->setDescricao('Faixa de ramais do Asterisk');
         $this->setValor($novoValor);
         $ret = $this->salvaConfigs();
+        if ($ret === true) {
+            Asterisk::montaContexto($this->configuracoes['faixaRamais']);
+        }
         return $ret;
     }
 
@@ -135,21 +140,26 @@ class Configuracao
      */
     public static function carregarConfigs(): ?object
     {
-        $conn = Connection::getConnection();
-        $stmt = $conn->query("SELECT name, value FROM settings");
-        $configuracoes = new \stdClass;
-        
-        while ($configSalva = $stmt->fetch(\PDO::FETCH_OBJ)) {
-            switch ($configSalva->name) {
-                case 'faixaRamais':
-                    $faixa =  explode('-', $configSalva->value);
-                    $configuracoes->faixaRamalInicial = $faixa[0];
-                    $configuracoes->faixaRamalFinal = $faixa[1];
-                    break;
+        try {
+            $conn = Connection::getConnection();
+            $stmt = $conn->query("SELECT name, value, description FROM settings");
+            $configuracoes = new \stdClass;
+            
+            while ($configSalva = $stmt->fetch(\PDO::FETCH_OBJ)) {
+                switch ($configSalva->name) {
+                    case 'faixaRamais':
+                        $faixa =  explode('-', $configSalva->value);
+                        $configuracoes->faixaRamalInicial = $faixa[0];
+                        $configuracoes->faixaRamalFinal = $faixa[1];
+                        $configuracoes->infoFaixaRamais = $configSalva->description;
+                        break;
+                }
             }
-        }
 
-        return $configuracoes;
+            return $configuracoes;
+        } catch (PDOException $e) {
+            ConfigGeralControl::renderizaPageError($e->getMessage());
+        }
     }
 
     /**
@@ -158,11 +168,15 @@ class Configuracao
      * @param [string] $configName Nome da config
      * @return object|null
      */
-    private function buscaValorConfig(string $configName = null): ?object
+    public static function buscaValorConfig(string $configName = null): ?object
     {
-        $conn = Connection::getConnection();
-        $stmt = $conn->query("SELECT value as valor FROM settings WHERE name = '$configName'");
-        return $stmt->fetch(\PDO::FETCH_OBJ);
+        try {
+            $conn = Connection::getConnection();
+            $stmt = $conn->query("SELECT value as valor FROM settings WHERE name = '$configName'");
+            return $stmt->fetch(\PDO::FETCH_OBJ);
+        } catch (PDOException $e) {
+            ConfigGeralControl::renderizaPageError($e->getMessage());
+        }
     }
 
 }

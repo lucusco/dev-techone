@@ -10,8 +10,9 @@
                     <div class="row">
                         <div class="col-xl-12 col-md-10">
                             <form action="salvar-config" method="post">
+                                {* Faixa de ramais *}
                                 <div class="form-group">
-                                    <label class="h5">Faixa de Ramais</label>
+                                    <label class="h5">Faixa de Ramais</label>&nbsp;{if isset($config->infoFaixaRamais)}<span><i class="fas fa-info-circle" style="color:#17a2b8" data-toggle="tooltip" data-placement="right" title="{$config->infoFaixaRamais}"></i></span>{/if}
                                     <div class="row">
                                         <div class="col-md-2 col-sm-1">
                                             <label for="rangeinicio" class="form-label">Ramal inicial</label>
@@ -22,8 +23,8 @@
                                             <input class="form-control" type="text" name="rangefim" id="rangefim" value="{if isset($config->faixaRamalFinal)}{$config->faixaRamalFinal}{/if}" placeholder="Ramal Final">
                                         </div>
                                     </div>
-                                    <button class="btn btn-success mt-3">Salvar</button>
                                 </div>
+                                <button class="btn btn-success mt-3">Salvar</button>
                             </form>
                         </div>
                     </div>     
