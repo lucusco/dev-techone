@@ -310,8 +310,9 @@ class Ramal extends DataRecord
                     $obj->setSecret($ramal['secret']);
                     $obj->setContext($ramal['context']);
                     $obj->setTech($ramal['tech']);
-                    $obj->setRecording($ramal['recording']);
+                    $obj->setRecording(strtolower($ramal['recording']));                 
                 } catch (Exception $e) {
+                    //echo $e->getMessage();
                     // TODO: Fazer uma contagem daquele que nao foram importados
                     continue;
                 }
@@ -376,18 +377,35 @@ class Ramal extends DataRecord
         $ramaisImportar = self::preparaCsv($files);
         if (!is_array($ramaisImportar)) 
             return $ramaisImportar;
+        
+        if (!count($ramaisImportar) > 0)
+            return 'Necessário inserir no mínimo 1 ramal';
 
-        $query = '';
-        foreach ($ramaisImportar as $ramal) {
-            $ramal = parent::prepare($ramal->toArray());
-            $query .= 'INSERT INTO extensions (' . implode(', ', array_keys($ramal)) . ')' .
-                ' VALUES (' . implode(', ', array_values($ramal)) . '); ';
-        }
+        $inseridos = 0;
+
         try {
             /** @var PDO conn */
             $conn = Connection::getConnection();
-            $result = $conn->exec($query);
-            if ($result > 0) {
+
+            foreach ($ramaisImportar as $ramal) {
+                $ramal = parent::prepare($ramal->toArray()); 
+                
+                $columns = implode(', ', array_keys($ramal)); 
+                $query = "INSERT INTO extensions ($columns) VALUES (:id, :exten, :username, :secret, :context, :tech, :recording)";
+                $stmt = $conn->prepare($query);
+                $stmt->bindValue(':id',        $ramal['id']);
+                $stmt->bindValue(':exten',     $ramal['exten']);
+                $stmt->bindValue(':username',  $ramal['username']);
+                $stmt->bindValue(':secret',    $ramal['secret']);
+                $stmt->bindValue(':context',   $ramal['context']);
+                $stmt->bindValue(':tech',      $ramal['tech']);
+                $stmt->bindValue(':recording', $ramal['recording']);
+                $res = $stmt->execute();
+
+                if ($res === true) $inseridos++;
+            }
+
+            if ($inseridos) {
                 Asterisk::escreveConfRamais();
                 return true;
             }
