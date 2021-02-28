@@ -98,4 +98,9 @@ class FilaControl implements InterfaceController
         header('Location: lista-fila?method=listar');
     }
 
+    public static function renderizaErro($msg = '')
+    {
+        FilaView::renderizar('error', $msg);
+    }
+
 }

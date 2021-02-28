@@ -50,4 +50,8 @@ class ConfigGeralControl
         header("Location: config");
     }
 
+    public static function paginaErro($erro)
+    {
+        self::renderizaPageError($erro);
+    }
 }

@@ -35,6 +35,10 @@ class FilaView
                 self::$smarty->assign('fila', $params['fila']);
                 self::$smarty->assign('comboRamais', $params['combo']);
                 break;
+            case 'error':
+                $template = 'error.tpl';
+                self::$smarty->assign('mensagem', $params);
+                break;
         }
 
         self::verificaMsgErro(self::$smarty);
