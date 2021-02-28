@@ -6,6 +6,9 @@ use Techone\Lib\Model\Ramal;
 
 class Asterisk
 {
+    const SIP_FILE = '/etc/asterisk/sip.conf';
+    const EXTENSIONS_FILE = '/etc/asterisk/extensioins.conf';
+    const DIALPLAN_RELOAD = "asterisk -rx 'sip reload'";
 
     /**
      * Escreve arquivo de configuração sip.conf
@@ -26,16 +29,16 @@ alwaysauthreject=yes
 allowguest=no\n";
        
         if (!empty($ramais)) {
-            $filename = BASE_DIR . 'Files/sip.conf';
+            $sipConf = BASE_DIR . 'Files/sip.conf';
             clearstatcache();
 
-            if (file_exists($filename))
-                unlink($filename);
+            if (file_exists($sipConf))
+                unlink($sipConf);
 
-            if (!$file = fopen($filename, 'w'))
+            if (!$file = fopen($sipConf, 'w'))
                 return false;
 
-            $infoGeral = ";Arquivo gerado automaticamente em " . date('d-m-Y H:i:s') . "\n$generalOptions";
+            $infoGeral = ";Arquivo gerado automaticamente em " . date('d-m-Y H:i:s') . " - Não edite diretamente\n$generalOptions";
             if (fwrite($file, $infoGeral) === FALSE)
                 return false;
 
@@ -45,7 +48,7 @@ allowguest=no\n";
             }
             fclose($file);
 
-            self::syncSipConf($filename);
+            self::syncSipConf($sipConf);
             return true;
         }
     }
@@ -78,16 +81,23 @@ context={$ramal->context}\n";
     /**
      * Move o arquivo sip.conf para o local correto e atualiza o dialplan
      *
-     * @param string $filename
+     * @param string $arqOrigem
      */
-    public static function syncSipConf($filename)
+    public static function syncSipConf($arqOrigem)
     {
         clearstatcache();
-        $sipFile = '/etc/asterisk/sip.conf';
-        if (file_exists($sipFile) && file_exists($filename)) {
-            rename('/etc/asterisk/sip.conf', '/etc/asterisk/sip.conf.bak');
-            copy($filename, $sipFile);
-            exec("asterisk -rx 'sip reload'");
+        if (file_exists($arqOrigem)) {
+
+            if (file_exists(self::SIP_FILE))
+                rename(self::SIP_FILE, self::SIP_FILE . '.bak');
+
+            copy($arqOrigem, self::SIP_FILE);
+            exec(self::DIALPLAN_RELOAD);
         }
+    }
+
+    public static function montaContexto($faixaRamais)
+    {
+        
     }
 }
