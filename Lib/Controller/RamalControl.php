@@ -2,7 +2,7 @@
 
 namespace Techone\Lib\Controller;
 
-use Exception;
+use DomainException;
 use Techone\Lib\Model\Ramal;
 use Techone\Lib\View\Ramal\RamalView;
 use Techone\Lib\Helper\ControllerAuxTrait;
@@ -88,7 +88,7 @@ class RamalControl implements InterfaceController
             $ramal->setContext($dados['context']);
             $ramal->setTech($dados['tech']);
             $ramal->setRecording();
-        } catch (Exception $e) {
+        } catch (DomainException $e) {
             $gerouException = true;
             $ramal = $ramal->carregarRamal($id);
             $this->setaMensagemRetorno('error', "{$e->getMessage()}");  

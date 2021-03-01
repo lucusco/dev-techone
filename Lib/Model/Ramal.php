@@ -3,7 +3,6 @@
 namespace Techone\Lib\Model;
 
 use PDO;
-use Exception;
 use PDOException;
 use DomainException;
 use Techone\Lib\Conf\Asterisk;
@@ -53,10 +52,10 @@ class Ramal extends DataRecord
 
     public function setExten($exten)
     {   
-        if (empty($exten) || $exten == '0') throw new Exception('Número do Ramal deve ser informado');
-        else if (!is_numeric($exten)) throw new Exception('Número do Ramal deve ser numérico');
-        else if (!is_int($exten + 0)) throw new Exception('Número do ramal inválido');
-        else if ($this->jaExiste('exten', $exten, $this->id) === true) throw new Exception('Ramal informado já existe');
+        if (empty($exten) || $exten == '0') throw new DomainException('Número do Ramal deve ser informado');
+        else if (!is_numeric($exten)) throw new DomainException('Número do Ramal deve ser numérico');
+        else if (!is_int($exten + 0)) throw new DomainException('Número do ramal inválido');
+        else if ($this->jaExiste('exten', $exten, $this->id) === true) throw new DomainException('Ramal informado já existe');
         else  $this->exten = $exten;
     }
 
@@ -68,7 +67,7 @@ class Ramal extends DataRecord
     public function setUsername($username)
     {
         if (empty($username)) 
-            throw new Exception('Descrição deve ser informada');
+            throw new DomainException('Descrição deve ser informada');
         else {
             $username = filter_var($username, FILTER_SANITIZE_STRING);
             $this->username = $username;
@@ -83,7 +82,7 @@ class Ramal extends DataRecord
     public function setSecret($secret)
     {
         if (empty($secret) || strlen($secret) < 4) 
-            throw new Exception('Senha deve ser informada e deve ter mais pelo menos 4 caracteres');
+            throw new DomainException('Senha deve ser informada e deve ter mais pelo menos 4 caracteres');
         else {
             $secret = filter_var($secret, FILTER_SANITIZE_STRING);
             $this->secret = $secret;
@@ -98,7 +97,7 @@ class Ramal extends DataRecord
     public function setContext($context)
     {
         if (empty($context)) 
-            throw new Exception('Context deve ser informado');
+            throw new DomainException('Context deve ser informado');
         else {
             $context = filter_var($context, FILTER_SANITIZE_STRING);
             $this->context = strtolower($context);
@@ -113,7 +112,7 @@ class Ramal extends DataRecord
     public function setTech($tech)
     {
         if (empty($tech)) 
-            throw new Exception('Tecnologia deve ser informada');
+            throw new DomainException('Tecnologia deve ser informada');
         else {
             $tech = filter_var($tech, FILTER_SANITIZE_STRING);
             $this->tech = strtoupper($tech);
@@ -128,12 +127,12 @@ class Ramal extends DataRecord
     public function setRecording($recording = '')
     {
         if (empty($recording) && !isset($_POST['gravacao'])) {
-            throw new Exception('Gravação deve ser informada');
+            throw new DomainException('Gravação deve ser informada');
         }  
         $recording = !empty($recording) ? $recording : $_POST['gravacao'];
         
         if (!in_array($recording, array('sim', 'nao', 's', 'n', 'não', 'on', 'off'))) {
-            throw new Exception('Gravação não especificada. Tipos permitidos são: sim, nao, s, n, não');
+            throw new DomainException('Gravação não especificada. Tipos permitidos são: sim, nao, s, n, não');
         } 
         $this->recording = (in_array($recording, array('sim', 's')) || (isset($_POST['gravacao']) && $_POST['gravacao'] == 'on')) ?  'true' : 'false'; 
     }
@@ -315,7 +314,7 @@ class Ramal extends DataRecord
                     $obj->setContext($ramal['context']);
                     $obj->setTech($ramal['tech']);
                     $obj->setRecording(strtolower($ramal['recording']));                 
-                } catch (Exception $e) {
+                } catch (DomainException $e) {
                     /* TODO: Fazer uma contagem daquele que nao foram importados
                      * Por hora, apenas continuar o loop ignorando o erro
                      */
