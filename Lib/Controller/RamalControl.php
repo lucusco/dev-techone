@@ -93,6 +93,7 @@ class RamalControl implements InterfaceController
             $ramal = $ramal->carregarRamal($id);
             $this->setaMensagemRetorno('error', "{$e->getMessage()}");  
             $dados['ramal'] = $ramal;
+            $dados['comboRamais'] = Ramal::comboRamais($dados['ramal']->exten);
             RamalView::renderizar('persistir', $dados);
         }
         
@@ -120,10 +121,10 @@ class RamalControl implements InterfaceController
 
     public function importar()
     {
-        $err = Ramal::importarRamal($_FILES);
-        if ($err === true) $this->setaMensagemRetorno('success', 'Planilha de ramais importada com sucesso!');
+        $ret = Ramal::importarRamal($_FILES);
+        if ($ret === true) $this->setaMensagemRetorno('success', 'Planilha de ramais importada com sucesso!');
         else {
-            $err = is_string($err) ? $err : 'Houve erro ao importar a planilha de ramais, contate o administrador';
+            $err = is_string($ret) ? $ret : 'Houve erro ao importar a planilha de ramais, contate o administrador';
             $this->setaMensagemRetorno('error', "$err");
             Ramal::removerCsv();
         }

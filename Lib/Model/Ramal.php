@@ -248,35 +248,38 @@ class Ramal extends DataRecord
      */
     private static function preparaCsv($files)
     {
-        if (!isset($files['arquivo']))
-            return 'Erro, o nome do campo recebido é inválido';
-
+        
+        if (!isset($files['arquivo'])) throw new DomainException('Erro, o nome do campo recebido é inválido');
+        
         $infoArquivo = (object)$files['arquivo'];
         $tiposPermitidos = array('text/csv', 'text/plain');
+
+        // Validações 
+        if ((int)$infoArquivo->error == 2 || filesize($infoArquivo->tmp_name) > 3000000) throw new DomainException('O tamanho do arquivo excede o máximo permitido! (3Mb)');
+        if ($infoArquivo->size <= 0 || empty($infoArquivo->name))                        throw new DomainException('Arquivo não detectado, por favor selecione-o novamente.');
+        if ((int)$infoArquivo->error != 0)                                               throw new DomainException('O arquivo importado apresentou erro durante a importação!');
+        if (!in_array(mime_content_type($infoArquivo->tmp_name), $tiposPermitidos))      throw new DomainException('Tipo de arquivo não reconhecido, apenas .csv.');
+
+        
         $cabecalhoPermitido = array('ramal', 'nome', 'senha', 'gravar', 'contexto', 'tipo');
         $cabecalho = NULL;
         $dadosRamais = array();
-
-        // Validações
-        if ((int)$infoArquivo->error == 2 || filesize($infoArquivo->tmp_name) > 3000000) return 'O tamanho do arquivo excede o máximo permitido! (3Mb)';
-        if ($infoArquivo->size <= 0 || empty($infoArquivo->name))                        return 'Arquivo não detectado, por favor selecione-o novamente.';
-        if ((int)$infoArquivo->error != 0)                                               return 'O arquivo importado apresentou erro durante a importação!';
-        if (!in_array(mime_content_type($infoArquivo->tmp_name), $tiposPermitidos))      return 'Tipo de arquivo não reconhecido, apenas .csv.';
 
         $uploadedPath = BASE_DIR . 'Files/Upload/' . date('d-m-y_H:i:s') . '_' . basename($infoArquivo->name);
         self::$lastUploadedCsv = $uploadedPath;
 
         // Manipulação do arquivo
         if (move_uploaded_file($infoArquivo->tmp_name, $uploadedPath)) {
-            if (($file = fopen($uploadedPath, 'r')) !== FALSE) {
-                while (($linha = fgetcsv($file, 500, ';')) !== FALSE) {
-                    if (!$cabecalho) {
-                        foreach ($linha as $l) {
-                            if (!in_array(strtolower($l), $cabecalhoPermitido))
-                                return "O cabeçalho $l não é permitido, por gentileza realize o ajuste.";
+            if (($arqCsv = fopen($uploadedPath, 'r')) !== FALSE) {
+                while (($linha = fgetcsv($arqCsv, 500, ';')) !== FALSE) {
+                    if (!$cabecalho) { 
+                        // Ajustar cabeçalho ao ler primeira linha
+                        foreach ($linha as $coluna) {
+                            if (!in_array(strtolower($coluna), $cabecalhoPermitido))
+                                throw new DomainException("O cabeçalho $coluna não é permitido, por gentileza realize o ajuste.");
 
                             // Adequar colunas do arquivo às colunas do banco
-                            switch (strtolower($l)) {
+                            switch (strtolower($coluna)) {
                                 case 'ramal':    $cabecalho[] = 'exten';     break;
                                 case 'nome':     $cabecalho[] = 'username';  break;
                                 case 'senha':    $cabecalho[] = 'secret';    break; 
@@ -286,22 +289,23 @@ class Ramal extends DataRecord
                             }
                         }
                     } else {
-                        foreach ($linha as $dado) {
-                            if (empty($dado)) return "Há valores em branco na planilha, todos os campos devem ser preenchidos!";
+                        foreach ($linha as $colunaRamal) {
+                            if (empty($colunaRamal)) throw new DomainException("Há valores em branco na planilha, todos os campos devem ser preenchidos!");
                         }
                         $dadosRamais[] = array_combine($cabecalho, $linha);
                     }
                 }
-                fclose($file);
+                fclose($arqCsv);
             }
         } else {
-            return "Erro ao manipular planilha de ramais!";
+            throw new DomainException("Erro ao manipular arquivo contendo os ramais a serem importados!");
         }
-        // Transformar array de objetos Ramal
+
+        // Transformar em array de objetos Ramal
         if (count($dadosRamais) > 0) {
             $ramaisImportar = array();
             $id = self::proximoId();
-            foreach ($dadosRamais as $ramal) { //TODO tratar erros
+            foreach ($dadosRamais as $ramal) {
                 $obj = new Ramal();
                 try {
                     $obj->setId($id);
@@ -312,14 +316,18 @@ class Ramal extends DataRecord
                     $obj->setTech($ramal['tech']);
                     $obj->setRecording(strtolower($ramal['recording']));                 
                 } catch (Exception $e) {
-                    //echo $e->getMessage();
-                    // TODO: Fazer uma contagem daquele que nao foram importados
+                    /* TODO: Fazer uma contagem daquele que nao foram importados
+                     * Por hora, apenas continuar o loop ignorando o erro
+                     */
                     continue;
                 }
                 $ramaisImportar[] = $obj;
                 $id++;
             }
         }
+
+        if (!count($ramaisImportar) > 0) throw new DomainException('Não foi identificado nenhum ramal a ser importado.');
+
         return $ramaisImportar;
     }
 
@@ -373,17 +381,10 @@ class Ramal extends DataRecord
      * @return true|false True caso a persistência tenha ocorrido, false caso contrário
      */
     public static function importarRamal(array $files)
-    {
-        $ramaisImportar = self::preparaCsv($files);
-        if (!is_array($ramaisImportar)) 
-            return $ramaisImportar;
-        
-        if (!count($ramaisImportar) > 0)
-            return 'Necessário inserir no mínimo 1 ramal';
-
+    {       
         $inseridos = 0;
-
         try {
+            $ramaisImportar = self::preparaCsv($files);
             /** @var PDO conn */
             $conn = Connection::getConnection();
 
@@ -409,12 +410,10 @@ class Ramal extends DataRecord
                 Asterisk::escreveConfRamais();
                 return true;
             }
-            else {
-                return false;
-            }
-        } 
-        catch (PDOException $e) {
+        } catch (PDOException $e) {
             RamalControl::renderizaErro($e->getMessage());
+        } catch (DomainException $e) {
+            return $e->getMessage();
         }
     }
 
