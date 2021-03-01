@@ -242,7 +242,7 @@ class Ramal extends DataRecord
     /**
      *  Faz a leitura do arquivo CSV e retorna os dados em um array de objetos
      *
-     * @param string $filename Nome completo do arquivo
+     * @param string $files Array do tipo $_FILES
      * @return array $data  Array de objetos com os ramais a serem importados
      */
     private static function preparaCsv($files)
@@ -374,10 +374,10 @@ class Ramal extends DataRecord
     }
 
     /**
-     * Faz a persistência de um array de ramais recebido pelo método preparaCsv
+     * Faz a persistência da pĺanilha de ramais
      *
-     * @param  array $files Array com objetos do tipo Ramal
-     * @return true|false True caso a persistência tenha ocorrido, false caso contrário
+     * @param  array $files Array do tipo $_FILES
+     * @return true|false True caso a persistência de pelo menos 1 ramal tenha ocorrido
      */
     public static function importarRamal(array $files)
     {       
