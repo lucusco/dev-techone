@@ -43,6 +43,7 @@ class RamalView
             case 'persistir':
                 $template = 'ramalAdd.tpl';
                 self::$smarty->assign('ramal', $params['ramal']);
+                self::$smarty->assign('comboRamais', $params['comboRamais']);
                 self::$smarty->assign('titulo', 'Editar Ramal');
                 break;
             

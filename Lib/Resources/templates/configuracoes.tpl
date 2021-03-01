@@ -24,6 +24,11 @@
                                         </div>
                                     </div>
                                 </div>
+                                {* Exemplo switch *}
+                                 <div class="custom-control custom-switch">
+                                    <input class="custom-control-input" type="checkbox" id="switchExemplo"  />
+                                    <label class="custom-control-label" for="switchExemplo"> Switch Futuro </label>
+                                </div>
                                 <button class="btn btn-success mt-3">Salvar</button>
                             </form>
                         </div>
