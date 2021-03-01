@@ -301,8 +301,8 @@ class Ramal extends DataRecord
         }
 
         // Transformar em array de objetos Ramal
+        $ramaisImportar = array();
         if (count($dadosRamais) > 0) {
-            $ramaisImportar = array();
             $id = self::proximoId();
             foreach ($dadosRamais as $ramal) {
                 $obj = new Ramal();
