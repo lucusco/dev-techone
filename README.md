@@ -15,6 +15,7 @@ As principais tecnologias utilizadas neste projeto são:
 * Asterisk 13
 * O layout foi obtido na internet (SB Admin v6.0.2, disponível em https://startbootstrap.com/template/sb-admin)
 
+Há métodos nesse projeto que manipulam arquivos do SO e do Asterisk, caso decida testá-lo será necessário gerenciar os usuários/permissões do sistema.
 
 Caso queira contribuir com este projeto ou sugerir melhorias, sinta-se a vontade para me procurar.
 
