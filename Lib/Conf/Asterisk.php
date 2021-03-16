@@ -2,6 +2,7 @@
 
 namespace Techone\Lib\Conf;
 
+use Techone\Lib\Helper\SIPException;
 use Techone\Lib\Model\Ramal;
 
 class Asterisk
@@ -36,15 +37,15 @@ allowguest=no\n";
                 unlink($sipConf);
 
             if (!$file = fopen($sipConf, 'w'))
-                return false;
+                throw new SIPException('Erro ao abrir sip.conf');
 
             $infoGeral = ";Arquivo gerado automaticamente em " . date('d-m-Y H:i:s') . " - Não edite diretamente\n$generalOptions";
             if (fwrite($file, $infoGeral) === FALSE)
-                return false;
+                throw new SIPException('Erro ao escrever em sip.conf');
 
             foreach ($ramais['ramais'] as $ramal) {
                 if (fwrite($file, self::montaExten($ramal)) === FALSE)
-                    return false;
+                    throw new SIPException('Erro ao escrever em sip.conf');
             }
             fclose($file);
 
@@ -61,7 +62,7 @@ allowguest=no\n";
      */
     private static function montaExten($ramal): string
     {
-        $linha = "
+        return "
 [{$ramal->exten}]
 callerid=\"{$ramal->username}\" <{$ramal->exten}>
 type=friend
@@ -74,8 +75,6 @@ dtmfmode=rfc2833
 insecure=invite,port
 canreinvite=yes
 context={$ramal->context}\n";
-        
-        return $linha;
     }
 
     /**
@@ -98,6 +97,6 @@ context={$ramal->context}\n";
 
     public static function montaContexto($faixaRamais)
     {
-        
+        //gerar o from-internal
     }
 }

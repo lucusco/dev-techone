@@ -7,6 +7,7 @@ use PDOException;
 use DomainException;
 use Techone\Lib\Model\Ramal;
 use Techone\Lib\Api\DataRecord;
+use Techone\Lib\Controller\FilaControl;
 use Techone\Lib\Database\Connection;
 use Techone\Lib\Helper\ModelFunctionsTrait;
 
@@ -90,7 +91,7 @@ class Fila extends DataRecord
         if (!isset($extension->ramais))
             throw new DomainException('Selecione no mínimo 1 ramal para a fila');
 
-        if ((count($extension->ramais) < 1))
+        if (count($extension->ramais) < 1)
             throw new DomainException('Não foram informados ramais para a fila!');
         
         foreach ($extension->ramais as $exten) {
@@ -113,8 +114,7 @@ class Fila extends DataRecord
         $conn = Connection::getConnection();
         $stmt = $conn->query("SELECT id FROM extensions WHERE id = {$exten}");
         $result = $stmt->fetch(PDO::FETCH_OBJ);
-        $ret = $result ? true : false;
-        return $ret;
+        return $result ? true : false;
     }
 
     /**
@@ -190,8 +190,7 @@ class Fila extends DataRecord
                 var_dump($fila);
 
             }catch (PDOException $e) {
-                var_dump($e->getMessage()); die;
-                //RamalControl::renderizaErro($e->getMessage());
+                FilaControl::renderizaErro($e->getMessage());
             }
         }
     }
@@ -210,8 +209,7 @@ class Fila extends DataRecord
         while ($exten = $stmt->fetch(PDO::FETCH_NUM)) {
             $extens[] = $exten[0];
         }
-        $ret = $extens ?? null;
-        return $ret;
+        return $extens ?? null;
     }
 
     /**
@@ -245,8 +243,7 @@ class Fila extends DataRecord
             $sql = "DELETE FROM extensions_queues WHERE id_queue = {$id};";
             $sql .= "DELETE FROM queues WHERE id = {$id}";
             $result = $conn->exec($sql);
-            $ret = ($result > 0) ? true : false;
-            return $ret;
+            return ($result > 0) ? true : false;
         } catch (PDOException $e) {
             echo $e->getMessage(); die;
         }

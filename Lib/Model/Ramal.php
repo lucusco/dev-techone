@@ -146,8 +146,7 @@ class Ramal extends DataRecord
     {
         try {
             if ($id) {
-                $ramal = $this->load($id);
-                return $ramal;
+                return $this->load($id);
             }
         } catch (PDOException $e) {
             RamalControl::renderizaErro($e->getMessage());
@@ -302,7 +301,7 @@ class Ramal extends DataRecord
 
         // Transformar em array de objetos Ramal
         $ramaisImportar = array();
-        if (count($dadosRamais) > 0) {
+        if (!empty($dadosRamais)) {
             $id = self::proximoId();
             foreach ($dadosRamais as $ramal) {
                 $obj = new Ramal();
@@ -325,7 +324,7 @@ class Ramal extends DataRecord
             }
         }
 
-        if (!count($ramaisImportar) > 0) throw new DomainException('Não foi identificado nenhum ramal a ser importado.');
+        if (empty($ramaisImportar)) throw new DomainException('Não foi identificado nenhum ramal a ser importado.');
 
         return $ramaisImportar;
     }
@@ -341,13 +340,13 @@ class Ramal extends DataRecord
     {
         if (!$exemplo) {
             $ramais = self::todosRamais();
-            if (!count($ramais['ramais']) > 0) return false;
+            if (empty($ramais['ramais'])) return false;
         }
         
         $filename = DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . date('H:i:s_') . 'ramais.csv';
         $file = fopen($filename, 'x+');
 
-        $cabecalho = $exemplo == true ? ['Ramal', 'Nome', 'Contexto', 'Tipo', 'Gravar', 'Senha'] :  ['ID', 'Ramal', 'Nome', 'Senha', 'Contexto', 'Tipo', 'Gravar'];
+        $cabecalho = $exemplo ? ['Ramal', 'Nome', 'Contexto', 'Tipo', 'Gravar', 'Senha'] :  ['ID', 'Ramal', 'Nome', 'Senha', 'Contexto', 'Tipo', 'Gravar'];
         fputcsv($file, $cabecalho, ';', '"');
 
         if ($exemplo) {
@@ -427,8 +426,7 @@ class Ramal extends DataRecord
             $conn = Connection::getConnection();
             $stmt = $conn->query("SELECT COALESCE(max(id), 0) AS ultimo FROM extensions");
             $result = $stmt->fetch();
-            $max = $result['ultimo'] + 1;
-            return $max;
+            return $result['ultimo'] + 1;
         } catch (PDOException $e) {
             RamalControl::renderizaErro($e->getMessage());
         }
@@ -454,7 +452,6 @@ class Ramal extends DataRecord
                 unset($faixaRamais[array_search($ramal->exten, $faixaRamais)]);
         }
 
-        $combo = HtmlForm::montaCombo('form-control', 'ramal', $faixaRamais, 'ramal', $ramalEmEdicao);
-        return $combo;
+        return HtmlForm::montaCombo('form-control', 'ramal', $faixaRamais, 'ramal', $ramalEmEdicao);
     }
 }

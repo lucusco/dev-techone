@@ -62,7 +62,6 @@ class Configuracao
      */
     public function preparaConfigs(): bool
     {
-        $configuracoes = $this->configuracoes;
         $faixaRamais = $this->configuracoes['faixaRamais'] ?? null;
         $ret[] = false;
         
@@ -70,8 +69,7 @@ class Configuracao
             $ret['faixaRamais'] = $this->salvarFaixaRamais();
         }
 
-        $ret = (in_array(null, $ret, true) || in_array(true, $ret, true)) ? true : false;
-        return $ret;
+        return (in_array(null, $ret, true) || in_array(true, $ret, true)) ? true : false;
     }
 
     /**

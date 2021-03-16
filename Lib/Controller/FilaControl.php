@@ -13,13 +13,11 @@ class FilaControl implements InterfaceController
 
     public function processarRequisicao()
     {
-        switch ($_GET['url']) {
-            case 'nova-fila':
-                $this->novaFila();
-                break;
-            default:
-                echo 'Ops!';
-        }
+       if ($_GET['url']) {
+            $this->novaFila();
+       } else {
+        echo 'Ops!';
+       }
     }
 
     /**

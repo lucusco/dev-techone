@@ -2,9 +2,9 @@
 
 namespace Techone\Lib\Database;
 
-use Exception;
 use PDO;
 use PDOException;
+use DomainException;
 
 /**
  *  Classe responsável por fazer a conexão com o banco e retorná-la
@@ -15,9 +15,6 @@ class Connection
     public static $conn;
     public static $msgFail;
 
-    private function __construct()
-    {
-    }
 
     /**
      * Faz o parse das informações de conexão com o banco e a retorna a conexão ou false em caso de falha
@@ -30,7 +27,7 @@ class Connection
         extract($dados);
 
         if (empty($host) || empty($user) || empty($password) || empty($dbname) || empty($port) || empty($type)) {
-            throw new Exception("Erro ao conectar com o banco de dados, contate o Luis");
+            throw new DomainException("Erro ao conectar com o banco de dados, contate o Luis");
         }
         try {
             switch ($type) {
