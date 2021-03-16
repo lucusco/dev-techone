@@ -12,10 +12,6 @@ class Transaction
     /** @var PDO conn */
     private static $conn;
 
-    private function __construct()
-    {
-    }
-
     /**
      *  Inicia transações
      */

@@ -32,6 +32,7 @@ class Ramal extends DataRecord
 
     public function __construct()
     {
+        //TODO: receber id e carregar
     }
 
     //Setters e getters

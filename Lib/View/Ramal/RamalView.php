@@ -10,6 +10,7 @@ class RamalView
     use ViewsTrait;
 
     private static $smarty;
+    private const RAMAL_TPL = 'ramalAdd.tpl';
 
     public static function renderizar($view, $params = '')
     {
@@ -17,7 +18,7 @@ class RamalView
 
         switch($view) {
             case 'novo-ramal': 
-                $template = 'ramalAdd.tpl';
+                $template = self::RAMAL_TPL;
                 self::$smarty->assign('titulo', 'Novo Ramal');
                 self::$smarty->assign('comboRamais', $params);
                 break;
@@ -34,14 +35,14 @@ class RamalView
                 break;
 
             case 'editar':
-                $template = 'ramalAdd.tpl';
+                $template = self::RAMAL_TPL;
                 self::$smarty->assign('titulo', 'Editar Ramal');
                 self::$smarty->assign('ramal', $params['ramal']);
                 self::$smarty->assign('comboRamais', $params['comboRamais']);
                 break;
             
             case 'persistir':
-                $template = 'ramalAdd.tpl';
+                $template = self::RAMAL_TPL;
                 self::$smarty->assign('ramal', $params['ramal']);
                 self::$smarty->assign('comboRamais', $params['comboRamais']);
                 self::$smarty->assign('titulo', 'Editar Ramal');
