@@ -3,7 +3,7 @@
 namespace Techone\Lib\Api;
 
 use PDO;
-use DomainException;
+use PDOException;
 use Techone\Lib\Database\Connection;
 
 /**
@@ -90,12 +90,16 @@ abstract class DataRecord
      *
      * @return int
      */
-    private function getProximoId(): int
+    protected function getProximoId(): int
     {
-        $conn = Connection::getConnection();
-        $stmt = $conn->query("SELECT COALESCE(max(id), 0) AS ultimo FROM {$this->getEntity()}");
-        $result = $stmt->fetch();
-        return $result['ultimo'] + 1;
+        try {
+            $conn = Connection::getConnection();
+            $stmt = $conn->query("SELECT COALESCE(max(id), 0) AS ultimo FROM {$this->getEntity()}");
+            $result = $stmt->fetch();
+            return $result['ultimo'] + 1;
+        } catch (PDOException $e) {
+            return $e->getMessage();
+        }
     }
 
     /**
