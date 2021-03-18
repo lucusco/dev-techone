@@ -4,6 +4,7 @@ namespace Techone\Lib\Controller;
 
 use DomainException;
 use Techone\Lib\Model\Ramal;
+use Techone\Lib\Model\RamalImport;
 use Techone\Lib\View\Ramal\RamalView;
 use Techone\Lib\Helper\ControllerAuxTrait;
 use Techone\Lib\Controller\InterfaceController;
@@ -121,19 +122,19 @@ class RamalControl implements InterfaceController
 
     public function importar()
     {
-        $ret = Ramal::importarRamal($_FILES);
+        $ret = RamalImport::importarRamal($_FILES);
         if ($ret === true) $this->setaMensagemRetorno('success', 'Planilha de ramais importada com sucesso!');
         else {
             $err = is_string($ret) ? $ret : 'Houve erro ao importar a planilha de ramais, contate o administrador';
             $this->setaMensagemRetorno('error', "$err");
-            Ramal::removerCsv();
+            RamalImport::removerCsv();
         }
         header('Location: importa-ramal');
     }
 
     public function exportar()
     { 
-        $file = isset($_GET['exemplo']) ? Ramal::exportarCsv(true) : Ramal::exportarCsv();
+        $file = isset($_GET['exemplo']) ? RamalImport::exportarCsv(true) : RamalImport::exportarCsv();
         
         if (file_exists($file)) {
             header('Content-Description: File Transfer');
