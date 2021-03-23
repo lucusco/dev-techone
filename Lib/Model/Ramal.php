@@ -219,8 +219,10 @@ class Ramal extends DataRecord
 
     /**
      * Remove um ramal do BD
+     * Retorna um inteiro indicando que o ramal foi removido (PDO exec) ou uma string de erro
      *
      * @param int $id ID do ramal a ser removido
+     * @return int|string 
      */
     public static function removerRamal(int $id)
     {
@@ -228,13 +230,16 @@ class Ramal extends DataRecord
             /** @var \PDO conn */
             $conn = Connection::getConnection();
             $sql = "DELETE FROM extensions WHERE id = {$id}";
+            //var_dump($sql); die;
             $result = $conn->exec($sql);
             if ($result) {
                 Asterisk::escreveConfRamais();
             }
             return $result;
         } catch (PDOException $e) {
-            RamalControl::renderizaErro($e->getMessage());
+            $errorCode = $e->getCode();           
+            return ($errorCode == ID_EH_FK_EMUSO) ? 'Este ramal está em uso por alguma fila e não pode ser removido.'
+                                                  : 'Houve um erro ao remover o ramal, contate o administrador.';
         }
     }
 

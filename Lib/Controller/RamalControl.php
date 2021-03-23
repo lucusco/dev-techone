@@ -114,8 +114,8 @@ class RamalControl implements InterfaceController
         $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
         $err = Ramal::removerRamal($id);
 
-        if ($err) $this->setaMensagemRetorno('success', 'Ramal removido com sucesso');
-        else $this->setaMensagemRetorno('error', 'Houve um erro ao remover o ramal, contate o administrador.');
+        if (is_int($err)) $this->setaMensagemRetorno('success', 'Ramal removido com sucesso');
+        else $this->setaMensagemRetorno('error', $err);
         
         header('Location: lista-ramal?method=listar');
     }

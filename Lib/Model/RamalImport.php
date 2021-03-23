@@ -17,10 +17,7 @@ class RamalImport extends Ramal
 {
     // Mantém salva o nome do útimo arquivo csv que foi feito upload
     private static $lastUploadedCsv;
-    
-    // Auxiliar para salvar id do ramal
-    private static $idAuxiliar;
-    
+       
     /**
      * Faz a persistência da pĺanilha de ramais
      *
@@ -194,14 +191,14 @@ class RamalImport extends Ramal
      */
     private static function montaArrayRamais(array $dadosRamais): array
     {
-        self::$idAuxiliar = null;
+        $idAuxiliar = null;
         $ramaisImportar = array();
         if (!empty($dadosRamais)) {
             foreach ($dadosRamais as $ramal) {
                 $obj = new Ramal();
-                self::$idAuxiliar = empty(self::$idAuxiliar) ? $obj->getProximoId() : self::$idAuxiliar;
+                $idAuxiliar = empty($idAuxiliar) ? $obj->getProximoId() : $idAuxiliar;
                 try {
-                    $obj->setId(self::$idAuxiliar);
+                    $obj->setId($idAuxiliar);
                     $obj->setExten($ramal['exten']);
                     $obj->setUsername($ramal['username']);
                     $obj->setSecret($ramal['secret']);
@@ -215,7 +212,7 @@ class RamalImport extends Ramal
                     continue;
                 }
                 $ramaisImportar[] = $obj;
-                self::$idAuxiliar++;
+                $idAuxiliar++;
             }
         }
         return $ramaisImportar;
