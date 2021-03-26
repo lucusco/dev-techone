@@ -87,57 +87,13 @@ class Fila extends DataRecord
      */
     public function setExtensions($data)
     {
-        $extension = $data;
-        if (!isset($extension->ramais))
+        if (!isset($data->ramais))
             throw new DomainException('Selecione no mínimo 1 ramal para a fila');
 
-        if (count($extension->ramais) < 1)
+        if (count($data->ramais) < 1)
             throw new DomainException('Não foram informados ramais para a fila!');
         
-        foreach ($extension->ramais as $exten) {
-            if (!$this->extensionExists(intval($exten))) {
-                //TODO informar que algum ramal não será salvo por não existir
-                continue;
-            }
-            $this->extensions[] = intval($exten);
-        }
-    }
-
-    /**
-     * Verifica se o ramal realmente existe antes de tentar salvá-lo na fila
-     *
-     * @param int $exten Ramal a ser verificado
-     * @return bool
-     */
-    private function extensionExists($exten): bool
-    {
-        $conn = Connection::getConnection();
-        $stmt = $conn->query("SELECT id FROM extensions WHERE id = {$exten}");
-        $result = $stmt->fetch(PDO::FETCH_OBJ);
-        return $result ? true : false;
-    }
-
-    /**
-     * Salva os ramais que fazem parte da fila
-     *
-     * @return bool true|false
-     */
-    public function saveExtensions(): bool
-    {
-        try {
-            $conn = Connection::getConnection();
-            $conn->exec("DELETE FROM extensions_queues WHERE id_queue = {$this->getId()}");
-            $query = "INSERT INTO extensions_queues (id_exten, id_queue) VALUES (?, ?)";
-            foreach ($this->extensions as $extension) {
-                $stmt = $conn->prepare($query);
-                $stmt->bindValue(1, $extension);
-                $stmt->bindValue(2, $this->id);
-                $stmt->execute();
-            }
-            return true;
-        } catch (PDOException $e) {
-            return false;
-        }
+        $this->extensions = $data->ramais;
     }
 
     /**
@@ -150,8 +106,10 @@ class Fila extends DataRecord
         try {
             $successSaveQueue = $this->store($data); 
             if ($successSaveQueue) {
-                $successSaveExten = $this->saveExtensions();
+                $ramaisEmFila = new RamalEmFila($this->id);
+                $successSaveExten = $ramaisEmFila->saveQueueExtens($this->extensions);
                 if ($successSaveExten) {
+                    $this->extensions = $ramaisEmFila;
                     return true;
                 }
             }
@@ -167,11 +125,7 @@ class Fila extends DataRecord
      */
     public function loadAll(): ?array
     {
-        $filas = $this->load();
-        if (empty($filas)) {
-            return null;
-        }
-        return $filas;
+        return $this->load() ?? null;
     }
 
     /**
@@ -185,31 +139,15 @@ class Fila extends DataRecord
         if ($id) {
             try {
                 $fila = $this->load($id);
-                $fila->extensions = $this->loadExtens($id);
+                $ramaisFila = new RamalEmFila($id);
+                $ramaisFila->loadExtens();
+                $fila->extensions = $ramaisFila;
                 return $fila;
-                var_dump($fila);
 
             }catch (PDOException $e) {
                 FilaControl::renderizaErro($e->getMessage());
             }
         }
-    }
-
-    /**
-     * Busca os ramais que foram inseridos nessa fila
-     * 
-     *  @return array|null ramais
-     */
-    private function loadExtens($idFila): ?array
-    {
-        $extens = array();
-        $query = "SELECT id_exten FROM extensions_queues WHERE id_queue = '$idFila'";
-        $conn = Connection::getConnection();
-        $stmt = $conn->query($query);
-        while ($exten = $stmt->fetch(PDO::FETCH_NUM)) {
-            $extens[] = $exten[0];
-        }
-        return $extens ?? null;
     }
 
     /**

@@ -99,6 +99,7 @@ class FilaControl implements InterfaceController
     public static function renderizaErro($msg = '')
     {
         FilaView::renderizar('error', $msg);
+        die;
     }
 
 }

@@ -29,9 +29,29 @@ class Ramal extends DataRecord
     private $tech;
     private $recording;
 
-    public function __construct()
+    public function __construct($id = null)
     {
-        //TODO: receber id e carregar
+        if ($id) {
+            //TODO
+        }
+    }
+
+    /**
+     * Carrea um ramal do BD via id
+     *
+     * @param [mixed] $id ID do ramal
+     */
+    public static function loadById($id)
+    {
+        if (is_numeric($id)) {
+            $conn = Connection::getConnection();
+            $sql = "SELECT * FROM ".self::TABLENAME." WHERE id = :id";
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetchObject();
+        }
+       
     }
 
     //Setters e getters

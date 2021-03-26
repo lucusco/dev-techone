@@ -5,6 +5,7 @@ namespace Techone\Lib\Api;
 use PDO;
 use PDOException;
 use Techone\Lib\Database\Connection;
+use Techone\Lib\Model\Ramal;
 
 /**
  *  Layer Supertype Pattern - baseada em Active Record\
@@ -83,6 +84,18 @@ abstract class DataRecord
             $tipoFetch = is_numeric($id) ? 'fetch' : 'fetchAll';
             return $stmt->$tipoFetch(PDO::FETCH_OBJ);
         }   
+    }
+
+    protected function loadFromId($id)
+    {
+        $conn = Connection::getConnection();
+        $sql = "SELECT * FROM {$this->getEntity()} WHERE id = $id";
+        return $conn->query($sql)->fetchObject(get_class($this));
+        
+        /* Forma alternativa */
+        //$stmt = $conn->query($sql);
+        //$stmt->setFetchMode(PDO::FETCH_CLASS, get_class($this));
+        //return $stmt->fetch();
     }
 
     /**

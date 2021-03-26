@@ -39,7 +39,7 @@
                                             <select multiple class="form-control" name="ramais[]" id="ramais" size="10">
                                             {if isset($comboRamais)}
                                                 {foreach $comboRamais as $ramal} 
-                                                    <option value="{$ramal->id}" {if isset($fila) && in_array($ramal->id, array_values($fila->extensions))}selected{/if}>{$ramal->descricao}</option>
+                                                    <option value="{$ramal->id}" {if isset($fila) && in_array($ramal->id, $fila->extensions->ramaisPorId)}selected{/if}>{$ramal->descricao}</option>
                                                 {/foreach}
                                             {/if}
                                             </select>
