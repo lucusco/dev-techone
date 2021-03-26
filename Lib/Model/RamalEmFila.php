@@ -46,12 +46,11 @@ class RamalEmFila
      */
     private function saveExtensions(): bool
     {
-        //var_dump($this); die;
         try {
             $conn = Connection::getConnection();
             $conn->exec("DELETE FROM " . self::TABLENAME . " WHERE id_queue = {$this->idFila}");
             $query = "INSERT INTO " . self::TABLENAME . " (id_exten, id_queue) VALUES (?, ?)";
-            foreach ($this->ramaisNaFila as $key => $exten) {
+            foreach ($this->ramaisNaFila as $exten) {
                 $stmt = $conn->prepare($query);
                 $stmt->bindValue(1, $exten->id);
                 $stmt->bindValue(2, $this->idFila);
