@@ -55,8 +55,11 @@ class Ramal extends DataRecord
     }
 
     //Setters e getters
-    public function setId($id)
+    public function setId($id = 0)
     {
+        if($id == 0) {
+            $id = $this->getProximoId();
+        }
         $this->id = $id;
     }
 
@@ -72,10 +75,9 @@ class Ramal extends DataRecord
 
     public function setExten($exten)
     {   
-        if (empty($exten) || $exten == '0') throw new DomainException('Número do Ramal deve ser informado');
-        else if (!is_numeric($exten)) throw new DomainException('Número do Ramal deve ser numérico');
-        else if (!is_int($exten + 0)) throw new DomainException('Número do ramal inválido');
-        else if ($this->jaExiste('exten', $exten, $this->id) === true) throw new DomainException('Ramal informado já existe');
+        if (empty($exten)) throw new DomainException('Número do Ramal deve ser informado');
+        else if (!is_numeric($exten) || !is_int($exten + 0)) throw new DomainException('Número do Ramal deve ser numérico');
+        else if ($this->jaExiste('exten', $exten) === true) throw new DomainException('Ramal informado já existe');
         else  $this->exten = $exten;
     }
 

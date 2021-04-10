@@ -78,11 +78,9 @@ class RamalControl implements InterfaceController
         $gerouException = null;
         $location = 'lista-ramal?method=listar';
 
-        if ($id) { // Update
-            $dados['id'] = $id;
-            $ramal->setId($dados['id']);
-        }
         try {
+            if ($id)  $ramal->setId($id);
+            else $ramal->setId();
             $ramal->setExten($dados['ramal']);
             $ramal->setUsername($dados['nome']);
             $ramal->setSecret($dados['senha']);

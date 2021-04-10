@@ -31,8 +31,11 @@ class Fila extends DataRecord
         return $this->id;
     }
 
-    public function setId($id)
+    public function setId($id = 0)
     {
+        if ($id == 0) {
+            $id = $this->getProximoId();
+        }
         $this->id = $id;
     }
 
@@ -45,7 +48,7 @@ class Fila extends DataRecord
     {
         if (!is_int($number) || empty($number))
             throw new DomainException('Entrada deve ser um número inteiro!');
-        if ($this->jaExiste('number', $number, $this->id) === true)
+        if ($this->jaExiste('number', $number) === true)
             throw new DomainException('Entrada informada já existe!');
 
         $this->number = $number;

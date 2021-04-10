@@ -50,6 +50,8 @@ class FilaControl implements InterfaceController
         if (isset($dados->id) && is_numeric($dados->id)) {
             $acao = 'atualizada';
             $fila->setId(intval($dados->id));
+        } else {
+            $fila->setId();
         }
         try {
             $fila->setNumber(intval($dados->entrada));

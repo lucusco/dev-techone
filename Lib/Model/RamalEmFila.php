@@ -8,7 +8,7 @@ use Techone\Lib\Model\Ramal;
 use Techone\Lib\Database\Connection;
 use Techone\Lib\Controller\FilaControl;
 
-class RamalEmFila
+final class RamalEmFila
 {
     const TABLENAME = 'extensions_queues';
 
