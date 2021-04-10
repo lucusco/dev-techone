@@ -1,3 +1,11 @@
+/* Database name: techone
+   Postgres 12 
+ */
+
+/* Sequences */
+create sequence extensions_id_seq;
+create sequence queues_id_seq;
+
 /* Database tables */
 
 /* Extensions */
@@ -11,7 +19,7 @@ create table extensions (
     recording boolean not null
 );
 
-/* Enum for strategy */
+/* Enum for queue strategy */
 CREATE TYPE queue_strategy AS ENUM ('ringall', 'linear', 'random');
 
 /* Queues */
